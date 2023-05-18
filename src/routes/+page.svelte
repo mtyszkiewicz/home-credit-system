@@ -1,63 +1,69 @@
 <script>
-  import Table from '../lib/Table.svelte'
-  export let data
+  import { page } from "$app/stores";
+
+  let who = $page.url.searchParams.get("who");
+  const API_BASE = "http://192.168.1.17:5055"
+  export let data;
+  
+  function refreshPage() {
+		location.reload();
+	};
+
+  /**
+   * @param {bigint} activityId
+   */
+  async function logActivity(activityId) {
+    const res = await fetch(
+      `${API_BASE}/activities_log?tenant_id=1&activity_id=${activityId}`,
+      { method: "POST"}
+    );
+    const json = await res.json();
+    location.reload();
+  }
 </script>
 
 <main
   class="relative flex flex-col items-center justify-center min-h-screen py-10"
 >
-  <a
-    href="https://vercel.com"
-    class="px-6 py-2 text-sm font-medium text-gray-600 transition-all rounded-full shadow-sm bg-white/30 dark:bg-white/80 ring-1 ring-gray-900/5 dark:text-black hover:shadow-lg active:shadow-sm"
-  >
-    Deploy your own to Vercel
-  </a>
-  <h1
-    class="pt-4 pb-8 bg-gradient-to-br dark:from-white from-black via-[#707070] to-[#ffffff] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-  >
-    Postgres on Vercel
-  </h1>
-  <Table users={data?.users} duration={data?.duration} />
-  <div
-    class="w-full max-w-lg mt-6 font-light text-center text-gray-600 dark:text-gray-300"
-  >
-    Simple hello world demo of
-    <a
-      href="https://vercel.com/postgres"
-      class="font-medium underline transition-colors underline-offset-4 dark:hover:text-white hover:text-black"
+  {#if who}
+    <div
+      class="w-full max-w-xl p-12 mx-auto rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
     >
-      Vercel Postgres
-    </a>
-    <div class="flex items-center justify-center my-2">
-      <span>Built with</span>
-      <a
-        href="https://kit.svelte.dev/"
-        class="flex items-center font-medium underline transition-colors underline-offset-4 dark:hover:text-white hover:text-black"
-      >
-        <span class="flex justify-center w-8">
-          <img src="svelte_logo.png" alt="svelte logo" class="h-6 mx-2" />
-        </span>
-        <p>SvelteKit</p>
-      </a>
-      .
+      <div class="flex justify-between items-center">
+        <p class="font-large">Aktywności</p>
+        <button
+          class="bg-gray-300 text-black px-2 py-1 rounded shadow hover:bg-gray-50 transition-colors duration-200"
+          on:click={refreshPage}>Refresh Page</button
+        >
+      </div>
+
+      <div class="divide-y divide-gray-900/5">
+        {#each data?.activities as activity (activity.id)}
+          <div class="flex items-center justify-between py-3">
+            <div class="flex items-center space-x-4">
+              <!-- <img
+						src={user.image}
+						alt={user.name}
+						width={48}
+						height={48}
+						class="rounded-full ring-1 ring-gray-900/5"
+					/> -->
+              <div class="space-x-1">
+                <span class="font-medium leading-none">{activity.name}</span>
+                <span class="text-sm text-gray-500">{activity.score}</span>
+                <button
+                  class="bg-gray-300 text-black px-2 py-1 rounded shadow hover:bg-gray-50 transition-colors duration-200"
+                  on:click={() => logActivity(activity.id)}>Add</button
+                >
+              </div>
+            </div>
+          </div>
+        {/each}
+      </div>
     </div>
-  </div>
-  <div class="flex flex-col items-center grow">
-    <a href="https://vercel.com">
-      <img
-        src="/vercel.svg"
-        alt="Vercel Logo"
-        class="h-4 my-4 dark:invert"
-        width={100}
-        height={24}
-      />
-    </a>
-    <a
-      href="https://github.com/vercel/examples/tree/main/storage/postgres-sveltekit"
-      class="flex items-center h-8 mt-auto space-x-2 bottom-20 right-20"
-    >
-      <img src="/github.svg" alt="GitHub Logo" class="h-6 dark:invert" />
-      <p class="font-light">Source</p>
-    </a>
-  </div>
+  {:else}
+    <h1 class="text-red-600 text-5xl font-bold text-center">
+      UNKNOWN IDENTITY
+    </h1>
+  {/if}
 </main>
