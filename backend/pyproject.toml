@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "hsc-api"
+version = "0.1.0"
+description = ""
+authors = ["Marcin Tyszkiewicz <tyszkm@gmail.com>"]
+readme = "README.md"
+packages = [{include = "hsc_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+psycopg2 = "^2.9.6"
+fastapi = "^0.95.2"
+uvicorn = "^0.22.0"
+python-dotenv = "^1.0.0"
+sqlalchemy = "^2.0.13"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
