@@ -6,10 +6,6 @@
   const image = data.userSummary.user.image;
   $: score = data.userSummary.user.total_score;
 
-  function updateScore() {
-    score += 1;
-  }
-
   function refreshPage() {
     location.reload();
   }
@@ -58,7 +54,7 @@
                 <span class="text-xs text-gray-500">{activity.score}</span>
                 <button
                   class="bg-gray-300 text-black px-2 py-1 rounded shadow hover:bg-gray-50 transition-colors duration-200"
-                  on:click={() => logActivity(activity.id)}>Add</button
+                  on:click={() => {logActivity(activity.id); score += activity.score}}>Add</button
                 >
               </div>
             </div>
