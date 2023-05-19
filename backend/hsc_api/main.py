@@ -18,90 +18,110 @@ def get_db():
         db.close()
 
 
+@app.get("/users", response_model=List[schemas.User])
+def read_users(db: Session = Depends(get_db)):
+    users = crud.get_users(db)
+    if len(users) == 0:
+        raise HTTPException(status_code=404, detail="No users found")
+    return [user.to_dict() for user in users]
+
+
+@app.get("/users/{user_id}", response_model=schemas.User)
+def read_user(user_id: str, db: Session = Depends(get_db)):
+    user = crud.get_user_by_id(db, user_id=user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user.to_dict()
+
+
+@app.get(
+    "/users/{user_id}/activity_records", response_model=List[schemas.ActivityRecord]
+)
+def read_user_activity_records(user_id: str, db: Session = Depends(get_db)):
+    user = crud.get_user_by_id(db, user_id=user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user.activity_records
+
+
+@app.post("/users/{user_id}/activity_records", response_model=schemas.ActivityRecord)
+def create_activity_record_for_user(
+    user_id: str, activity_id: int, db: Session = Depends(get_db)
+):
+    user = crud.get_user_by_id(db, user_id=user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    activity = crud.get_activity_by_id(db, activity_id == activity_id)
+    if activity is None:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    activity_record = crud.create_user_activity_record(
+        db=db, user_id=user_id, activity_id=activity_id
+    )
+    if activity_record is None:
+        raise HTTPException(status_code=500, detail="Could not create activity record")
+    return activity_record
+
+
+@app.get("/users/{user_id}/activity_summary", response_model=schemas.UserActivitySummary)
+def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
+    user = crud.get_user_by_id(db, user_id=user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    user_activity_summary = crud.get_activity_summary_for_user(db, user_id)
+    return {
+        "user": user.to_dict(),
+        "activity_summary": [
+            {
+                "id": activity.id,
+                "name": activity.name,
+                "count": count,
+                "total_value": total_value,
+                "icon": activity.icon,
+                "description": activity.description,
+                "group_name": activity.group_name,
+            }
+            for activity, count, total_value in user_activity_summary
+        ],
+    }
+
+
 @app.get("/activities", response_model=List[schemas.Activity])
 def read_activities(db: Session = Depends(get_db)):
     activities = crud.get_activities(db)
+    if len(activities) == 0:
+        raise HTTPException(status_code=404, detail="No activities found")
     return activities
 
 
-@app.get("/activities_log", response_model=List[schemas.ActivityLog])
-def read_activities_log(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    logs = crud.get_activities_log(db, skip=skip, limit=limit)
-    return [{"id": log.id, "user": log.user, "activity": log.activity} for log in logs]
-
-
-@app.get("/summary")
-def read_user_summary(db: Session = Depends(get_db), user_id: str = None):
-    total_scores = crud.get_user_total_score(db)
-    activity_counts = crud.get_user_activity_counts(db)
-
-    result = [
-        {
-            "user": user,
-            "total_score": total_score,
-            "activities": [
-                {
-                    "name": activity.name,
-                    "icon": activity.icon,
-                    "count": count,
-                    "score": count * activity.score
-                }
-                for _user, activity, count in activity_counts
-                if _user.id == user.id
-            ]
-        }
-        for user, total_score in total_scores
-    ]
-    if user_id is not None:
-        return [user for user in result if user["user"].id == user_id][0]
-
-    return result
-
-
-@app.get("/total_scores")
-def read_user_total_score(db: Session = Depends(get_db)):
-    total_scores = crud.get_user_total_score(db)
-    return [
-        {"user_id": user.id, "user_name": user.name, "total_score": total_score}
-        for user, total_score in total_scores
-    ]
-
-
-@app.get("/activity_counts")
-def read_user_activity_counts(db: Session = Depends(get_db)):
-    activity_counts = crud.get_user_activity_counts(db)
-    return [
-        {
-            "user_id": user.id,
-            "user_name": user.name,
-            "activity_name": activity.name,
-            "activity_count": count,
-        }
-        for user, activity, count in activity_counts
-    ]
-
-
-@app.get("/users")
-def read_users(db: Session = Depends(get_db)):
-    users = crud.get_users(db)
-    return users
-
-@app.get("/users/{user_id}")
-def read_user(user_id: str, db: Session = Depends(get_db)):
-    user = crud.get_user_by_id(db, user_id=user_id)
-    return user
-
-
-@app.post("/activities_log")
-def create_user_activities_log(
-    user_id: str, activity_id: int, db: Session = Depends(get_db)
+@app.get("/activity_records", response_model=List[schemas.ActivityRecord])
+def read_activities_records(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
-    activity_log = crud.create_user_activities_log(
-        db, user_id=user_id, activity_id=activity_id
-    )
-    return activity_log
+    records = crud.get_activity_records(db, skip=skip, limit=limit)
+    if len(records) == 0:
+        raise HTTPException(status_code=404, detail="No activity records found")
+    return records
 
-@app.delete("/activity_log/{id}")
-def delete_activity_log(id: int, db: Session = Depends(get_db)):
-    crud.delete_activity_log(db, id)
-    return {"message": "Activity log deleted"}
+
+@app.get("/activity_summary", response_model=List[schemas.UserActivitySummary])
+def read_activities_summary(db: Session = Depends(get_db)):
+    activity_summary = crud.get_activity_summary(db)
+
+    summary_dict = {}
+    for user, activity, count, total_value in activity_summary:
+        if user.id not in summary_dict:
+            summary_dict[user.id] = {"user": user.to_dict(), "activity_summary": []}
+
+        summary_dict[user.id]["activity_summary"].append(
+            {
+                "id": activity.id,
+                "name": activity.name,
+                "count": count,
+                "total_value": total_value,
+                "icon": activity.icon,
+                "description": activity.description,
+                "group_name": activity.group_name,
+            }
+        )
+
+    return list(summary_dict.values())

@@ -2,14 +2,14 @@ DROP TABLE IF EXISTS activities;
 CREATE TABLE activities (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    score INTEGER NOT NULL DEFAULT 0,
     icon VARCHAR(10) NOT NULL,
+    value INTEGER NOT NULL DEFAULT 0,
     description TEXT DEFAULT '',
     group_name VARCHAR(10) NOT NULL CHECK (group_name IN ('standard', 'extra', 'penalty')),
     cooldown_minutes INTEGER NOT NULL DEFAULT 1
 );
 
-INSERT INTO activities (name, icon, score, group_name, cooldown_minutes) VALUES
+INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
 ('Wstawienie zmywarki', '🍛', 2, 'standard', 60),
 ('Rozładowanie zmywarki', '🍽️', 2, 'standard', 60),
 ('Umycie blatu w kuchni', '🧽', 3, 'standard', 5),
@@ -18,17 +18,17 @@ INSERT INTO activities (name, icon, score, group_name, cooldown_minutes) VALUES
 ('Powieszenie prania', '☀️', 2, 'standard', 60),
 ('Ubrania do szafy', '👔', 3, 'standard', 60);
 
-INSERT INTO activities (name, icon, score, group_name, cooldown_minutes) VALUES
+INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
 ('Umycie zlewu i kranu', '🚰', 3, 'extra', 120),
 ('Udkurzenie domu', '🧹', 3, 'extra', 1440),                     -- 1 day
 ('Umycie umywalki i szafki', '🧼', 3, 'extra', 1440),            -- 1 day
 ('Usunięcie kłaków z prysznica', '💩', 2, 'extra', 20160),       -- 2 weeks
 ('Umycie kabiny i lustra', '🪞', 3, 'extra', 1440); -- 1 day
 
-INSERT INTO activities (name, icon, score, group_name, cooldown_minutes) VALUES
+INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
 ('Ubrania na ziemi (od sztuki)', '🧦', -3, 'penalty', 1);
 
-CREATE TABLE IF NOT EXISTS activities_log (
+CREATE TABLE IF NOT EXISTS activity_records (
     id SERIAL PRIMARY KEY,
     activity_id INTEGER NOT NULL,
     user_id VARCHAR(13) NOT NULL,

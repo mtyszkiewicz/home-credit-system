@@ -1,32 +1,57 @@
-# from typing import Union
-
+from typing import List
 from pydantic import BaseModel, Field
 
-
 class User(BaseModel):
-    id: str
-    name: str
-    image: str = Field(description="Static image filename.")
+    id: str = Field(..., description="Unique ID of the user")
+    name: str = Field(..., description="Name of the user")
+    image: str = Field(..., description="Static image filename representing the user's profile")
+    score: int = Field(..., description="Aggregate score of the user based on activity values")
 
     class Config:
         orm_mode = True
+
 
 class Activity(BaseModel):
-    # id: int
-    name: str
-    score: int
-    icon: str = Field(description="Icon emoji")
-    # description: str
-    group_name: str
+    name: str = Field(..., description="Name of the activity")
+    value: int = Field(..., description="Score value associated with the activity")
+    icon: str = Field(..., description="Icon emoji representing the activity")
+    group_name: str = Field(..., description="Group name to which the activity belongs")
 
     class Config:
         orm_mode = True
 
-class ActivityLog(BaseModel):
-    id: int
-    timestamp: str = Field(None)
-    user: User
-    activity: Activity
+
+class ActivityRecord(BaseModel):
+    id: int = Field(..., description="Unique ID of the activity record")
+    timestamp: str = Field(..., description="Time when the activity record was created")
+    user: User = Field(..., description="The user associated with the activity record")
+    activity: Activity = Field(..., description="The activity associated with the record")
+
+    class Config:
+        orm_mode = True
+
+
+class ActivityRecordCreate(BaseModel):
+    user_id: int = Field(..., description="ID of the user for whom the activity record is being created")
+    activity_id: int = Field(..., description="ID of the activity for the activity record")
+
+
+class ActivitySummary(BaseModel):
+    id: int = Field(..., description="ID of the activity in the summary")
+    name: str = Field(..., description="Name of the activity in the summary")
+    count: int = Field(..., description="Count of this activity performed by the user")
+    total_value: int = Field(..., description="Total value earned by the user through this activity")
+    icon: str = Field(..., description="Icon emoji representing the activity")
+    description: str = Field(..., description="Description of the activity")
+    group_name: str = Field(..., description="Group name to which the activity belongs")
+
+    class Config:
+        orm_mode = True
+
+
+class UserActivitySummary(BaseModel):
+    user: User = Field(..., description="The user for whom the activity summary is being reported")
+    activity_summary: List[ActivitySummary] = Field(..., description="List of summaries of activities performed by the user")
 
     class Config:
         orm_mode = True
