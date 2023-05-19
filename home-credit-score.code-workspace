@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "name": "FastAPI backend",
+            "path": "./backend"
+        },
+        {
+            "name": "SvelteKit application",
+            "path": "./webapp"
+        },
+        {
+            "name": "Postgres database",
+            "path": "./database"
+        }
+    ]
+}

@@ -13,6 +13,7 @@ fastapi = "^0.95.2"
 uvicorn = "^0.22.0"
 python-dotenv = "^1.0.0"
 sqlalchemy = "^2.0.13"
+pytz = "^2023.3"
 
 
 [build-system]

@@ -20,4 +20,13 @@
   - get_activities
 - activity_records
   - get_activity_records
+- activity_summary
+  - get_activity_summary
+
+# Web
+
+## Main page
+- User profile info with current score
+- Available activities to pick
+
  

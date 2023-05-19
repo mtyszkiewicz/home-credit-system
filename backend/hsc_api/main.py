@@ -1,13 +1,29 @@
+from collections import defaultdict
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 from typing import List
 
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+origins = [
+    "http://192.168.1.17",
+    "http://192.168.1.17:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_db():
@@ -23,7 +39,7 @@ def read_users(db: Session = Depends(get_db)):
     users = crud.get_users(db)
     if len(users) == 0:
         raise HTTPException(status_code=404, detail="No users found")
-    return [user.to_dict() for user in users]
+    return sorted([user.to_dict() for user in users], key=lambda user: user["score"], reverse=True)
 
 
 @app.get("/users/{user_id}", response_model=schemas.User)
@@ -41,7 +57,7 @@ def read_user_activity_records(user_id: str, db: Session = Depends(get_db)):
     user = crud.get_user_by_id(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return user.activity_records
+    return sorted(user.activity_records, key=lambda record: record.timestamp, reverse=True)
 
 
 @app.post("/users/{user_id}/activity_records", response_model=schemas.ActivityRecord)
@@ -70,7 +86,7 @@ def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
     user_activity_summary = crud.get_activity_summary_for_user(db, user_id)
     return {
         "user": user.to_dict(),
-        "activity_summary": [
+        "activity_summary": sorted([
             {
                 "id": activity.id,
                 "name": activity.name,
@@ -81,7 +97,7 @@ def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
                 "group_name": activity.group_name,
             }
             for activity, count, total_value in user_activity_summary
-        ],
+        ], lambda activity: activity["total_value"], reverse=True),
     }
 
 
@@ -93,14 +109,24 @@ def read_activities(db: Session = Depends(get_db)):
     return activities
 
 
-@app.get("/activity_records", response_model=List[schemas.ActivityRecord])
+@app.get("/activity_records")#, response_model=List[schemas.ActivityRecord])
 def read_activities_records(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     records = crud.get_activity_records(db, skip=skip, limit=limit)
     if len(records) == 0:
         raise HTTPException(status_code=404, detail="No activity records found")
-    return records
+    records_daily = defaultdict(list)
+    for record in records:
+        records_daily[record.timestamp.date()].append(record.to_dict())
+
+    return [
+        {
+            "date": date_str,
+            "records": list(reversed(data))
+        }
+        for date_str, data in records_daily.items()
+    ]
 
 
 @app.get("/activity_summary", response_model=List[schemas.UserActivitySummary])
@@ -124,4 +150,7 @@ def read_activities_summary(db: Session = Depends(get_db)):
             }
         )
 
-    return list(summary_dict.values())
+    for user_id, data in summary_dict.items():
+        summary_dict[user_id]["activity_summary"] = sorted(data["activity_summary"], key=lambda activity: activity["total_value"], reverse=True)
+    
+    return sorted(list(summary_dict.values()), key=lambda data: data["user"]["score"], reverse=True)

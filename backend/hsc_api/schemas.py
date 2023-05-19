@@ -1,5 +1,7 @@
 from typing import List
 from pydantic import BaseModel, Field
+from datetime import datetime
+
 
 class User(BaseModel):
     id: str = Field(..., description="Unique ID of the user")
@@ -12,6 +14,7 @@ class User(BaseModel):
 
 
 class Activity(BaseModel):
+    id: int
     name: str = Field(..., description="Name of the activity")
     value: int = Field(..., description="Score value associated with the activity")
     icon: str = Field(..., description="Icon emoji representing the activity")
@@ -23,7 +26,7 @@ class Activity(BaseModel):
 
 class ActivityRecord(BaseModel):
     id: int = Field(..., description="Unique ID of the activity record")
-    timestamp: str = Field(..., description="Time when the activity record was created")
+    timestamp: datetime = Field(..., description="Time when the activity record was created")
     user: User = Field(..., description="The user associated with the activity record")
     activity: Activity = Field(..., description="The activity associated with the record")
 

@@ -1,7 +1,12 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text
+from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime
 from sqlalchemy.orm import relationship
 
 from .database import Base
+
+import pytz
+
+utc_tz = pytz.timezone('UTC')
+warsaw_tz = pytz.timezone('Europe/Warsaw')
 
 
 class Activity(Base):
@@ -41,9 +46,31 @@ class ActivityRecord(Base):
     id = Column(Integer, primary_key=True, index=True)
     activity_id = Column(Integer, ForeignKey("activities.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
-    timestamp = Column(TIMESTAMP, server_default=text("(CURRENT_TIMESTAMP)"))
+    timestamp = Column(DateTime, server_default=text("(CURRENT_TIMESTAMP)"))
 
     user = relationship("User", backref="activity_records", foreign_keys=[user_id])
     activity = relationship(
         "Activity", backref="activity_records", foreign_keys=[activity_id]
     )
+
+    @property
+    def timestamp_pl(self):
+        aware_timestamp = self.timestamp.replace(tzinfo=utc_tz)
+        return aware_timestamp.astimezone(warsaw_tz)
+
+    @property
+    def date(self):
+        return self.timestamp_pl.date()
+    
+    @property
+    def time(self):
+        return str(self.timestamp_pl.time())[:5]
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "timestamp": self.timestamp_pl,
+            "time": self.time,
+            "user": self.user,
+            "activity": self.activity,
+        }

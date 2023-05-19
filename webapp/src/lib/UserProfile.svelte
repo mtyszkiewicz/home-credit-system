@@ -7,18 +7,21 @@
   export let score;
 </script>
 
-<div class="bg-red-500 p-6">
-  <div class="flex items-center space-x-4">
+<div class="p-4 items-center">
+  <div class="flex items-center space-x-4 place-content-start">
     <img
       src={image}
       alt={username}
-      width={64}
-      height={64}
+      width={80}
+      height={80}
       class="rounded-full ring-1 ring-gray-900/5"
     />
     <div class="space-y-1">
-      <p class="font-medium leading-none">{username}</p>
-      <p class="text-sm text-gray-500">Score: {score}</p>
+      <p class="font-medium text-xl leading-none">{username}</p>
+      <div class="font-light">
+        <span>score:</span>
+        <span>{score}</span>
+      </div>
     </div>
   </div>
 </div>
