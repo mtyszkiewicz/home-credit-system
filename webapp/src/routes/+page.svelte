@@ -1,6 +1,7 @@
 <script>
-  const API_BASE = "http://192.168.1.17:5055";
+  import Profile from "../lib/Profile.svelte";
   export let data;
+  const API_BASE = "http://192.168.1.17:5055";
 
   const username = data.userSummary.user.name;
   const image = data.userSummary.user.image;
@@ -29,21 +30,11 @@
     <div
       class="w-full max-w-xl p-12 mx-auto rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
     >
-    <div class="bg-red-500 p-6">
-      <div class="flex items-center space-x-4">
-        <img
-          src={data?.user.image}
-          alt={data?.user.name}
-          width={64}
-          height={64}
-          class="rounded-full ring-1 ring-gray-900/5"
-        />
-        <div class="space-y-1">
-          <p class="font-medium leading-none">{data?.user.name}</p>
-          <p class="text-sm text-gray-500">Score: {score}</p>
-        </div>
-      </div>
-    </div>
+      <Profile
+        username={data.user.name}
+        image={data.user.image}
+        score={data.userSummary.total_score}
+      />
 
       <div class="divide-y divide-gray-900/5">
         {#each data?.activities as activity (activity.id)}
@@ -54,7 +45,10 @@
                 <span class="text-xs text-gray-500">{activity.score}</span>
                 <button
                   class="bg-gray-300 text-black px-2 py-1 rounded shadow hover:bg-gray-50 transition-colors duration-200"
-                  on:click={() => {logActivity(activity.id); score += activity.score}}>Add</button
+                  on:click={() => {
+                    logActivity(activity.id);
+                    score += activity.score;
+                  }}>Add</button
                 >
               </div>
             </div>

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from typing import List
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -17,13 +18,13 @@ def get_db():
         db.close()
 
 
-@app.get("/activities")
+@app.get("/activities", response_model=List[schemas.Activity])
 def read_activities(db: Session = Depends(get_db)):
     activities = crud.get_activities(db)
     return activities
 
 
-@app.get("/activities_log")
+@app.get("/activities_log", response_model=List[schemas.ActivityLog])
 def read_activities_log(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     logs = crud.get_activities_log(db, skip=skip, limit=limit)
     return [{"id": log.id, "user": log.user, "activity": log.activity} for log in logs]
@@ -36,15 +37,12 @@ def read_user_summary(db: Session = Depends(get_db), user_id: str = None):
 
     result = [
         {
-            "user": {
-                "id": user.id,
-                "name": user.name,
-                "image": user.image,
-                "total_score": total_score
-            },
+            "user": user,
+            "total_score": total_score,
             "activities": [
                 {
                     "name": activity.name,
+                    "icon": activity.icon,
                     "count": count,
                     "score": count * activity.score
                 }
@@ -55,7 +53,7 @@ def read_user_summary(db: Session = Depends(get_db), user_id: str = None):
         for user, total_score in total_scores
     ]
     if user_id is not None:
-        return [user for user in result if user["user"]["id"] == user_id][0]
+        return [user for user in result if user["user"].id == user_id][0]
 
     return result
 

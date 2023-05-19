@@ -6,20 +6,20 @@ from fastapi import HTTPException
 from . import models, schemas
 
 
-def get_activities(db: Session):
+def get_activities(db: Session) -> List[schemas.Activity]:
     return db.query(models.Activity).all()
 
 
-def get_users(db: Session):
+def get_users(db: Session) -> List[schemas.User]:
     return db.query(models.User).all()
 
-def get_user_by_id(db: Session, user_id: str) -> models.User:
+def get_user_by_id(db: Session, user_id: str) -> schemas.User:
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
 def get_activities_log(
     db: Session, skip: int = 0, limit: int = 100
-) -> List[models.ActivityLog]:
+) -> List[schemas.ActivityLog]:
     return db.query(models.ActivityLog).offset(skip).limit(limit).all()
 
 
@@ -50,7 +50,7 @@ def get_user_activity_counts(db: Session):
     )
 
 
-def create_user_activities_log(db: Session, user_id: int, activity_id: int):
+def create_user_activities_log(db: Session, user_id: int, activity_id: int) -> schemas.ActivityLog:
     activity = (
         db.query(models.Activity).filter(models.Activity.id == activity_id).first()
     )
@@ -66,7 +66,7 @@ def create_user_activities_log(db: Session, user_id: int, activity_id: int):
     return activity_log
 
 
-def delete_activity_log(db: Session, id: int):
+def delete_activity_log(db: Session, id: int) -> schemas.ActivityLog:
     activity_log = (
         db.query(models.ActivityLog).filter(models.ActivityLog.id == id).first()
     )
@@ -74,3 +74,4 @@ def delete_activity_log(db: Session, id: int):
         raise HTTPException(status_code=404, detail="Activity log not found")
     db.delete(activity_log)
     db.commit()
+    return activity_log
