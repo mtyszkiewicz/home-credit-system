@@ -8,6 +8,7 @@ class User(BaseModel):
     name: str = Field(..., description="Name of the user")
     image: str = Field(..., description="Static image filename representing the user's profile")
     score: int = Field(..., description="Aggregate score of the user based on activity values")
+    color: str = Field(...)
 
     class Config:
         orm_mode = True
@@ -29,6 +30,7 @@ class ActivityRecord(BaseModel):
     timestamp: datetime.datetime = Field(..., description="Time when the activity record was created")
     user: User = Field(..., description="The user associated with the activity record")
     activity: Activity = Field(..., description="The activity associated with the record")
+    time: str
 
     class Config:
         orm_mode = True

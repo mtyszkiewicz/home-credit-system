@@ -28,11 +28,9 @@
 >
   <UserProfile username={data.user.name} image={data.user.image} {score} />
 
-  <div class="divide-y divide-gray-900/5">
-    {#each data.activities as activity (activity.id)}
-      <div class="flex items-center py-2 justify-end">
-        <Activity {activity} on:activityClick={handleActivityClick} />
-      </div>
-    {/each}
-  </div>
+  {#each data.activities as activity (activity.id)}
+    <div class="flex items-center py-3 justify-end divide-y divide-gray-900/5">
+      <Activity {activity} on:activityClick={handleActivityClick} />
+    </div>
+  {/each}
 </div>

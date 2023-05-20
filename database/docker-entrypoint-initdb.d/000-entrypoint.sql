@@ -38,8 +38,9 @@ CREATE TABLE IF NOT EXISTS activity_records (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id VARCHAR(13) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    image VARCHAR(255) NULL
+    name VARCHAR(100) NOT NULL,
+    image VARCHAR(100) NOT NULL,
+    color VARCHAR(100) NOT NULL
 );
-INSERT INTO users (name, id, image) VALUES
-('Marcin', 'A9A518D471361', 'cat-face.png'), ('Julia', 'D3B6585C643A2', 'mouse-face.png');
+INSERT INTO users (name, id, image, color) VALUES
+('Marcin', 'A9A518D471361', 'cat-face.png', 'orange'), ('Julia', 'D3B6585C643A2', 'mouse-face.png', 'pink');

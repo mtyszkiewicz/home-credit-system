@@ -3,6 +3,7 @@ export interface User {
     name: string;
     image: string;
     score: number;
+    color: string;
 }
 
 export interface Activity {

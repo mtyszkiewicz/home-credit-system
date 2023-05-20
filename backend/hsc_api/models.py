@@ -21,6 +21,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     image = Column(String)
+    color = Column(String)
 
     @property
     def score(self):
@@ -32,6 +33,7 @@ class User(Base):
             "name": self.name,
             "image": self.image,
             "score": self.score,
+            "color": self.color
         }
 
 
