@@ -109,7 +109,7 @@ def read_activities(db: Session = Depends(get_db)):
     return activities
 
 
-@app.get("/activity_records")#, response_model=List[schemas.ActivityRecord])
+@app.get("/activity_records", response_model=List[schemas.ActivityRecordsHistory])
 def read_activities_records(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
@@ -120,13 +120,13 @@ def read_activities_records(
     for record in records:
         records_daily[record.timestamp.date()].append(record.to_dict())
 
-    return [
+    return sorted([
         {
             "date": date_str,
-            "records": list(reversed(data))
+            "records": sorted(data, key=lambda record: record["timestamp"], reverse=True)
         }
         for date_str, data in records_daily.items()
-    ]
+    ], key=lambda day: day["date"], reverse=True)
 
 
 @app.get("/activity_summary", response_model=List[schemas.UserActivitySummary])

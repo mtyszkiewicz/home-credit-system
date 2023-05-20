@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from datetime import datetime
+import datetime
 
 
 class User(BaseModel):
@@ -26,9 +26,16 @@ class Activity(BaseModel):
 
 class ActivityRecord(BaseModel):
     id: int = Field(..., description="Unique ID of the activity record")
-    timestamp: datetime = Field(..., description="Time when the activity record was created")
+    timestamp: datetime.datetime = Field(..., description="Time when the activity record was created")
     user: User = Field(..., description="The user associated with the activity record")
     activity: Activity = Field(..., description="The activity associated with the record")
+
+    class Config:
+        orm_mode = True
+
+class ActivityRecordsHistory(BaseModel):
+    date: datetime.date
+    records: List[ActivityRecord]
 
     class Config:
         orm_mode = True
