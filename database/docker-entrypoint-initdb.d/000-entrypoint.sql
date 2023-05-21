@@ -14,19 +14,19 @@ INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
 ('Rozładowanie zmywarki', '🍽️', 2, 'standard', 60),
 ('Umycie blatu w kuchni', '🧽', 3, 'standard', 5),
 ('Wyrzucenie śmieci', '🗑️', 2, 'standard', 1),
-('Wstawienie pralki', '🧺', 1, 'standard', 60),
+('Wstawienie pralki', '🧺', 2, 'standard', 60),
 ('Powieszenie prania', '☀️', 2, 'standard', 60),
 ('Ubrania do szafy', '👔', 3, 'standard', 60);
 
 INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
-('Umycie zlewu i kranu', '🚰', 3, 'extra', 120),
-('Udkurzenie domu', '🧹', 3, 'extra', 1440),                     -- 1 day
-('Umycie umywalki i szafki', '🧼', 3, 'extra', 1440),            -- 1 day
-('Usunięcie kłaków z prysznica', '💩', 2, 'extra', 20160),       -- 2 weeks
-('Umycie kabiny i lustra', '🪞', 3, 'extra', 1440); -- 1 day
+('Umycie zlewu', '🚰', 3, 'extra', 120),
+('Odkurzenie domu', '🌪️', 5, 'extra', 1440),                     -- 1 day
+('Umycie umywalki', '🧼', 3, 'extra', 1440),            -- 1 day
+('Usunięcie owłosienia', '💩', 2, 'extra', 20160),       -- 2 weeks
+('Umycie kabiny prysznicowej', '🚿', 5, 'extra', 1440); -- 1 day
 
 INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
-('Ubrania na ziemi (od sztuki)', '🧦', -3, 'penalty', 1);
+('Ubrania na ziemi', '🧦', -3, 'penalty', 1);
 
 CREATE TABLE IF NOT EXISTS activity_records (
     id SERIAL PRIMARY KEY,
@@ -43,4 +43,5 @@ CREATE TABLE users (
     color VARCHAR(100) NOT NULL
 );
 INSERT INTO users (name, id, image, color) VALUES
-('Marcin', 'A9A518D471361', 'cat-face.png', 'orange'), ('Julia', 'D3B6585C643A2', 'mouse-face.png', 'pink');
+('Marcin', 'A9A518D471361', 'cat-face.png', 'orange'), 
+('Julia', 'D3B6585C643A2', 'mouse-face.png', 'pink');

@@ -106,7 +106,7 @@ def read_activities(db: Session = Depends(get_db)):
     activities = crud.get_activities(db)
     if len(activities) == 0:
         raise HTTPException(status_code=404, detail="No activities found")
-    return activities
+    return sorted(activities, key=lambda activity: activity.name)
 
 
 @app.get("/activity_records", response_model=List[schemas.ActivityRecordsHistory])

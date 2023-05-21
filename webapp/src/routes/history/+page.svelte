@@ -12,7 +12,7 @@
         <div class="py-2 pl-4 divide-y divide-gray-900/5">
             <div class="space-x-1">
               <span class="text-sm text-gray-600">{record.time}</span>
-              <span class="font-sm bg-{record.user.color}-500 p-1 rounded-lg">{record.user.name}</span>
+              <span class="font-sm bg-{record.user.color}-500 p-1 bg-opacity-40 rounded-lg">{record.user.name}</span>
               <span class="font-sm">{record.activity.icon}</span>
               <span class="font-sm">{record.activity.name}</span>
             </div>

@@ -2,7 +2,11 @@
 export default {
   content: ['./src/{lib,routes}/**/*.{html,js,svelte,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      opacity: {
+        '40': '0.4'
+      }
+    },
   },
   plugins: [],
   safelist: [
