@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       opacity: {
-        '40': '0.4'
+        '35': '0.35'
       }
     },
   },
