@@ -12,7 +12,7 @@
       {#each day.records as record (record.id)}
           <span class="text-sm text-gray-600">{record.time}</span>
           <span
-            class="font-sm place-self-center bg-{record.user.color}-500 px-1 bg-opacity-35 rounded-md">{record.user.name}</span>
+            class="font-sm text-center w-16 place-self-center bg-{record.user.color}-500 px-1 bg-opacity-35 rounded-md">{record.user.name}</span>
           <span class="font-sm place-self-end px-2">{record.activity.icon}</span>
           <div class="font-sm col-span-4">{record.activity.name}</div>
       {/each}

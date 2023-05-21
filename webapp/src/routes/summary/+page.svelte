@@ -12,15 +12,26 @@
       image={summary.user.image}
       score={summary.user.score}
     />
-      {#each summary.activity_summary as activity (activity.id)}
-        <div class="flex items-center py-3 justify-end">
-          <div class="space-x-1">
-            <span class="text-xl">{activity.icon}</span>
-            <span class="font-sm">{activity.name}</span>
-            <span class="font-sm">x{activity.count}</span>
-            <span class="font-sm">Total: {activity.total_value}</span>
-          </div>
-        </div>
-      {/each}
+    <table class="w-full mt-3">
+      <thead class="border-b-2 border-gray-300">
+        <tr>
+          <th class="text-left px-4 py-2">Activity</th>
+          <th class="text-left px-4 py-2">Count</th>
+          <th class="text-left px-4 py-2">Total Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each summary.activity_summary as activity (activity.id)}
+          <tr class="border-b border-gray-200">
+            <td class="flex items-center py-2 px-4">
+              <span class="text-xl">{activity.icon}</span>
+              <span class="ml-2">{activity.name}</span>
+            </td>
+            <td class="py-2 px-4 text-center">{activity.count}</td>
+            <td class="py-2 px-4 text-center">{activity.total_value}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
 {/each}
