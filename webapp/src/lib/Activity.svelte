@@ -13,10 +13,10 @@
 
 <div class="flex items-center space-x-4">
   <div class="space-x-1">
-    <span class="text-xl">{activity.icon}</span>
-    <span class="font-sm leading-none">{activity.name}</span>
+    <span class="text-2xl">{activity.icon}</span>
+    <span class="font-sm text-lg">{activity.name}</span>
     <button
-      class={`justify-self-end px-2 py-1 rounded shadow transition-colors duration-200 ${
+      class={`justify-self-end w-12 h-12 rounded-full shadow transition-colors duration-200 ${
         activity.value > 0 ? "bg-green-500 text-white" : "bg-red-500 text-white"
       }`}
       on:click={handleClick}
