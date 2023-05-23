@@ -7,11 +7,13 @@
   <div
     class="w-full max-w-xl p-6 mb-6 mx-auto rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
   >
-    <UserProfile
-      username={summary.user.name}
-      image={summary.user.image}
-      score={summary.user.score}
-    />
+    <div class="flex place-content-around">
+      <UserProfile
+        username={summary.user.name}
+        image={summary.user.image}
+        score={summary.user.score}
+      />
+    </div>
     <table class="w-full mt-3">
       <thead class="border-b-2 border-gray-300">
         <tr>
@@ -27,8 +29,8 @@
               <span class="text-xl pr-1">{activity.icon}</span>
               <span class="ml-2">{activity.name}</span>
             </td>
-            <td class="text-center py-2 px-4 ">{activity.count}</td>
-            <td class="text-center py-2 px-4 ">{activity.total_value}</td>
+            <td class="text-center py-2 px-4">{activity.count}</td>
+            <td class="text-center py-2 px-4">{activity.total_value}</td>
           </tr>
         {/each}
       </tbody>
