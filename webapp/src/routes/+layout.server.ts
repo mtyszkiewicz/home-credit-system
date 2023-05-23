@@ -1,8 +1,8 @@
 import type { User } from "../types";
 
-const API_BASE: string = `http://${$page.url.hostname}:5055`;
 
 export async function load({ url }) {
+  const API_BASE: string = `http://${url.hostname}:5055`;
   const userId = url.searchParams.get("user_id");
 
   if (userId === null) {
