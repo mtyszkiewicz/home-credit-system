@@ -5,25 +5,25 @@ CREATE TABLE activities (
     icon VARCHAR(10) NOT NULL,
     value INTEGER NOT NULL DEFAULT 0,
     description TEXT DEFAULT '',
-    group_name VARCHAR(10) NOT NULL CHECK (group_name IN ('standard', 'extra', 'penalty')),
-    cooldown_minutes INTEGER NOT NULL DEFAULT 1
+    -- group_name VARCHAR(10) NOT NULL CHECK (group_name IN ('standard', 'extra', 'penalty')),
+    -- cooldown_minutes INTEGER NOT NULL DEFAULT 1
 );
 
-INSERT INTO activities (name, icon, value, group_name, cooldown_minutes) VALUES
-('Wstawienie zmywarki', '🍛', 2, 'standard', 60),
-('Rozładowanie zmywarki', '🍽️', 2, 'standard', 60),
-('Umycie blatu w kuchni', '🧽', 3, 'standard', 5),
-('Wyrzucenie śmieci', '🗑️', 2, 'standard', 1),
-('Wstawienie pralki', '🧺', 2, 'standard', 60),
-('Powieszenie prania', '☀️', 2, 'standard', 60),
-('Ubrania do szafy', '👔', 3, 'standard', 60),
-('Umycie zlewu', '🚰', 3, 'extra', 120),
-('Odkurzenie domu', '🌪️', 5, 'extra', 1440),
-('Umycie umywalki', '🧼', 3, 'extra', 1440),
-('Usunięcie owłosienia', '💩', 2, 'extra', 20160),
-('Umycie kabiny prysznicowej', '🚿', 5, 'extra', 1),
-('Ubrania na ziemi', '🧦', -3, 'penalty', 1),
-('Zakupy', '🥐', 3, 'standard', 60);
+INSERT INTO activities (name, icon, value) VALUES
+('Wstawienie zmywarki', '🍛', 2),
+('Rozładowanie zmywarki', '🍽️', 2),
+('Umycie blatu w kuchni', '🧽', 3),
+('Wyrzucenie śmieci', '🗑️', 2),
+('Wstawienie pralki', '🧺', 2),
+('Powieszenie prania', '☀️', 2),
+('Ubrania do szafy', '👔', 3),
+('Umycie zlewu', '🚰', 3),
+('Odkurzenie domu', '🌪️', 5),
+('Umycie umywalki', '🧼', 3),
+('Usunięcie owłosienia', '💩', 2),
+('Umycie kabiny prysznicowej', '🚿', 5),
+('Ubrania na ziemi', '🧦', -3),
+('Zakupy', '🥐', 3);
 
 CREATE TABLE IF NOT EXISTS activity_records (
     id SERIAL PRIMARY KEY,
