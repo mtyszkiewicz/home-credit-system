@@ -21,8 +21,9 @@
   }
 </script>
 
+
 <div
-  class="w-full max-w-xl p-6 mx-2 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
+  class="p-6 mx-2 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
 >
   <div class="flex place-content-around">
     <UserProfile username={data.user.name} image={data.user.image} {score} />

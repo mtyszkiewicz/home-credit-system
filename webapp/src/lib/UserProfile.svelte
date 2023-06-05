@@ -14,7 +14,7 @@
       alt={username}
       width={80}
       height={80}
-      class="rounded-full ring-1 ring-gray-900/5"
+      class="rounded-full ring-1 ring-gray-900/5 shadow-lg"
     />
     <div class="space-y-1">
       <p class="font-medium text-xl leading-none">{username}</p>

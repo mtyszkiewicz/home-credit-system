@@ -4,7 +4,7 @@
 
 <main class="min-h-screen">
   <div
-    class="p-4 mx-2 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
+    class="p-6 mx-2 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
   >
     {#each data.history as day}
       <p class="text-xl mt-4">{day.date}</p>
