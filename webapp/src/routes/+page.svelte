@@ -1,7 +1,7 @@
 <script lang="ts">
   import UserProfile from "../lib/UserProfile.svelte";
   import type { Activity } from "../types";
-  import { page } from "$app/stores"
+  import { page } from "$app/stores";
   const API_BASE = `http://${$page.url.hostname}:5055`;
   export let data;
 
@@ -21,11 +21,10 @@
   }
 </script>
 
-
 <div
-  class="p-6 mx-2 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
+  class="p-6 w-96 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
 >
-  <div class="flex place-content-around">
+  <div class="flex place-content-around pb-4">
     <UserProfile username={data.user.name} image={data.user.image} {score} />
     {#if activitiesDone.length > 0}
       <button
@@ -54,4 +53,11 @@
       />
     {/each}
   </div>
+  <!-- <div class="grid grid-cols-4">
+    {#each data.activities as activity (activity.id)}
+      <div class="py-4 m-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 bg-zinc-100 rounded-lg shadow-md">
+        <div class="text-center text-3xl select-none">{activity.icon}</div>
+      </div>
+    {/each}
+  </div> -->
 </div>
