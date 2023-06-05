@@ -35,11 +35,13 @@
     <p class ="text-9xl">🤡</p>
   </main>
 {/if}
-<style>
+<style lang="postcss">
   .active {
-    @apply bg-slate-100 text-slate-950 transition-shadow duration-200 shadow-md;
+    @apply 
+      dark:bg-zinc-800 dark:text-zinc-300 bg-slate-100 text-slate-950 
+      font-medium transition-shadow duration-200 shadow-md;
   }
   a {
-    @apply rounded-lg py-2 font-medium text-gray-500 w-24 text-center touch-none;
+    @apply dark:text-zinc-500 rounded-lg py-2 w-24 text-center touch-none;
   }
 </style>
