@@ -10,7 +10,7 @@
       <p class="text-xl">{day.date}</p>
       <div class="grid grid-cols-7 pl-2 items-center gap-y-2">
       {#each day.records as record (record.id)}
-          <span class="text-sm text-gray-600">{record.time}</span>
+          <span class="text-sm text-gray-500 text-center w-10">{record.time}</span>
           <span
             class="font-sm text-center w-16 bg-{record.user.color}-500 bg-opacity-35 rounded-md">{record.user.name}</span>
           <span class="font-sm px-5">{record.activity.icon}</span>

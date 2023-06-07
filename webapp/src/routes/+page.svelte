@@ -36,21 +36,23 @@
     {/if}
   </div>
 
-  <div class="grid grid-cols-9 place-items-center mt-6 space-y-2">
+  <div class="grid grid-cols-9 items-center gap-y-2">
     {#each data.activities as activity (activity.id)}
-      <span class={`${activity.value > 0 ? 'text-green-500' : 'text-red-500'}`}>
+      <div class={`${activity.value > 0 ? 'text-green-500' : 'text-red-500'}`}>
         {activity.value > 0 ? '+' : ''}{activity.value}
-      </span>
-      <span class="text-xl">{activity.icon}</span>
-      <span class="font-sm text-lg col-span-6 place-self-start">
+      </div>
+      <div class="text-xl">{activity.icon}</div>
+      <div class="font-sm text-lg col-span-6 place-self-start">
         {activity.name}
-      </span>
-      <input
-        type="checkbox"
-        bind:group={activitiesDone}
-        value={activity}
-        class={`p-3.5 place-self-end accent-blue-500`}
-      />
+      </div>
+      <div class="flex justify-center items-center">
+        <input
+          type="checkbox"
+          bind:group={activitiesDone}
+          value={activity}
+          class="p-3.5 accent-blue-500 shadow"
+        />
+      </div>
     {/each}
   </div>
   <!-- <div class="grid grid-cols-4">
