@@ -4,7 +4,7 @@ CREATE TABLE activities (
     name VARCHAR(255) NOT NULL,
     icon VARCHAR(10) NOT NULL,
     value INTEGER NOT NULL DEFAULT 0,
-    description TEXT DEFAULT '',
+    description TEXT DEFAULT ''
     -- group_name VARCHAR(10) NOT NULL CHECK (group_name IN ('standard', 'extra', 'penalty')),
     -- cooldown_minutes INTEGER NOT NULL DEFAULT 1
 );
@@ -23,7 +23,8 @@ INSERT INTO activities (name, icon, value) VALUES
 ('Usunięcie owłosienia', '💩', 2),
 ('Umycie kabiny prysznicowej', '🚿', 5),
 ('Ubrania na ziemi', '🧦', -3),
-('Zakupy', '🥐', 3);
+('Zakupy', '🥐', 3),
+('Ścieranie kurzy', '🤧', 4);
 
 CREATE TABLE IF NOT EXISTS activity_records (
     id SERIAL PRIMARY KEY,

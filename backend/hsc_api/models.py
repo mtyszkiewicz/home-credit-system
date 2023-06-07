@@ -12,7 +12,6 @@ class Activity(Base):
     icon = Column(String, unique=True)
     value = Column(Integer)
     description = Column(String)
-    group_name = Column(String)
 
 
 class User(Base):

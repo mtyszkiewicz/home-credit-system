@@ -19,7 +19,6 @@ class Activity(BaseModel):
     name: str = Field(..., description="Name of the activity")
     value: int = Field(..., description="Score value associated with the activity")
     icon: str = Field(..., description="Icon emoji representing the activity")
-    group_name: str = Field(..., description="Group name to which the activity belongs")
 
     class Config:
         orm_mode = True
