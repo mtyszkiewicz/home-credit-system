@@ -54,7 +54,6 @@ class ActivitySummary(BaseModel):
     total_value: int = Field(..., description="Total value earned by the user through this activity")
     icon: str = Field(..., description="Icon emoji representing the activity")
     description: str = Field(..., description="Description of the activity")
-    group_name: str = Field(..., description="Group name to which the activity belongs")
 
     class Config:
         orm_mode = True

@@ -96,7 +96,6 @@ def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
                 "total_value": total_value,
                 "icon": activity.icon,
                 "description": activity.description,
-                "group_name": activity.group_name,
             }
             for activity, count, total_value in user_activity_summary
         ], lambda activity: activity["total_value"], reverse=True),
@@ -148,7 +147,6 @@ def read_activities_summary(db: Session = Depends(get_db)):
                 "total_value": total_value,
                 "icon": activity.icon,
                 "description": activity.description,
-                "group_name": activity.group_name,
             }
         )
 

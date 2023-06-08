@@ -11,7 +11,6 @@ export interface Activity {
     name: string;
     value: number;
     icon: string;
-    group_name: string;
 }
 
 export interface ActivityRecord {
