@@ -25,7 +25,7 @@
   class="p-6 w-96 rounded-lg shadow-xl dark:bg-white/10 bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg"
 >
   <div class="flex place-content-around pb-4">
-    <UserProfile username={data.user.name} image={data.user.image} {score} />
+    <UserProfile user={data.user} {score} />
     {#if activitiesDone.length > 0}
       <button
         class="w-20 py-2 rounded-lg bg-opacity-25 ring-2 ring-blue-500 shadow-lg bg-blue-500 place-self-center"
@@ -55,11 +55,10 @@
       </div>
     {/each}
   </div>
+
   <!-- <div class="grid grid-cols-4">
     {#each data.activities as activity (activity.id)}
-      <div class="py-4 m-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 bg-zinc-100 rounded-lg shadow-md">
-        <div class="text-center text-3xl select-none">{activity.icon}</div>
-      </div>
+      
     {/each}
   </div> -->
 </div>

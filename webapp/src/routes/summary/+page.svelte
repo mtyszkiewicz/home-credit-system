@@ -9,8 +9,7 @@
   >
     <div class="flex place-content-around">
       <UserProfile
-        username={summary.user.name}
-        image={summary.user.image}
+        user={summary.user}
         score={summary.user.score}
       />
     </div>
