@@ -14,7 +14,7 @@
 </script>
 
 <dialog
-  id={`activity-dialog-${activity.id}`}
+  id="activity-dialog"
   class="w-80 backdrop:bg-zinc-800 backdrop:bg-opacity-50 dark:bg-zinc-900 rounded-lg dialog-scale"
 >
   <form method="dialog">

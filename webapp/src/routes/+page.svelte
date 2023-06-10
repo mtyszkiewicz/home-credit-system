@@ -2,11 +2,18 @@
   import UserProfile from "../lib/UserProfile.svelte";
   import ActivityTile from "../lib/ActivityTile.svelte";
   import ActivityDialog from "../lib/ActivityDialog.svelte";
+  import { onMount } from "svelte";
   import type { Activity } from "../types";
   import { page } from "$app/stores";
   const API_BASE = `http://${$page.url.hostname}:5055`;
   export let data;
   $: score = data.user.score;
+  $: selectedActivity = data.activities[0];
+
+  let dialog: HTMLDialogElement;
+  onMount(() => {
+    dialog = document.getElementById("activity-dialog")!;
+  });
 
   async function handleActivitySubmit(
     event: CustomEvent<{ activity: Activity }>
@@ -27,9 +34,14 @@
   </div>
 
   <div class="grid grid-cols-4">
-    {#each data.activities as activity (activity.id)}
-      <ActivityDialog {activity} on:submit={handleActivitySubmit} />
-      <ActivityTile {activity} />
+    <ActivityDialog activity={selectedActivity} on:submit={handleActivitySubmit} />
+    {#each data.activities as activity (activity.id)} 
+      <button
+        class="py-4 m-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 bg-zinc-100 rounded-lg shadow-md text-center text-3xl"
+        on:click={() => {selectedActivity = activity; dialog.showModal()}}
+      >
+        {activity.icon}
+      </button>
     {/each}
   </div>
 </div>
