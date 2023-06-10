@@ -9,22 +9,23 @@ CREATE TABLE activities (
     -- cooldown_minutes INTEGER NOT NULL DEFAULT 1
 );
 
-INSERT INTO activities (name, icon, value) VALUES
-('Wstawienie zmywarki', '🍛', 2),
-('Rozładowanie zmywarki', '🍽️', 2),
-('Umycie blatu w kuchni', '🧽', 3),
-('Wyrzucenie śmieci', '🗑️', 2),
-('Wstawienie pralki', '🧺', 2),
-('Powieszenie prania', '☀️', 2),
-('Ubrania do szafy', '👔', 3),
-('Umycie zlewu', '🚰', 3),
-('Odkurzenie domu', '🌪️', 5),
-('Umycie umywalki', '🧼', 3),
-('Usunięcie owłosienia', '💩', 2),
-('Umycie kabiny prysznicowej', '🚿', 5),
-('Ubrania na ziemi', '🧦', -3),
-('Zakupy', '🥐', 3),
-('Ścieranie kurzy', '🤧', 4);
+INSERT INTO activities (id, name, icon, value) VALUES
+(1, 'Wstawienie zmywarki', '🍛', 2),
+(2, 'Rozładowanie zmywarki', '🍽️', 2),
+(3, 'Umycie blatu w kuchni', '🧽', 3),
+(4, 'Wyrzucenie śmieci', '🗑️', 2),
+(5, 'Wstawienie pralki', '🧺', 2),
+(6, 'Powieszenie prania', '☀️', 2),
+(7, 'Ubrania do szafy', '👔', 3),
+(8, 'Umycie zlewu', '🚰', 3),
+(9, 'Odkurzenie domu', '🌪️', 5),
+(10, 'Umycie umywalki', '🧼', 3),
+(11, 'Usunięcie owłosienia', '💩', 3),
+(12, 'Umycie kabiny prysznicowej', '🚿', 5),
+(14, 'Zakupy', '🥐', 3),
+(15, 'Ścieranie kurzy', '🤧', 4),
+(16, 'Umycie muszli', '🐚', 3);
+
 
 CREATE TABLE IF NOT EXISTS activity_records (
     id SERIAL PRIMARY KEY,
