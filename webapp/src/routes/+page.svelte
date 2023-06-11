@@ -1,6 +1,5 @@
 <script lang="ts">
   import UserProfile from "../lib/UserProfile.svelte";
-  import ActivityTile from "../lib/ActivityTile.svelte";
   import ActivityDialog from "../lib/ActivityDialog.svelte";
   import { onMount } from "svelte";
   import type { Activity } from "../types";
@@ -33,14 +32,17 @@
     <UserProfile user={data.user} {score} />
   </div>
 
-  <div class="grid grid-cols-4">
+  <div class="grid grid-cols-3">
     <ActivityDialog activity={selectedActivity} on:submit={handleActivitySubmit} />
-    {#each data.activities as activity (activity.id)} 
+    {#each data.activities as activity (activity.id)}
       <button
-        class="py-4 m-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 bg-zinc-100 rounded-lg shadow-md text-center text-3xl"
+        class="py-4 m-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 bg-zinc-100 rounded-lg shadow-md"
         on:click={() => {selectedActivity = activity; dialog.showModal()}}
       >
-        {activity.icon}
+      <span class="text-center text-3xl">{activity.icon}</span>
+        <div class="text-xs mx-1">
+          {activity.name}
+        </div>
       </button>
     {/each}
   </div>

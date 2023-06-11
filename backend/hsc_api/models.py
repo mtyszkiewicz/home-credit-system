@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -11,7 +11,7 @@ class Activity(Base):
     name = Column(String, unique=True)
     icon = Column(String, unique=True)
     value = Column(Integer)
-    description = Column(String)
+    requirements = Column(ARRAY(String))
 
 
 class User(Base):

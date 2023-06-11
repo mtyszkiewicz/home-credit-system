@@ -11,6 +11,7 @@ export interface Activity {
     name: string;
     value: number;
     icon: string;
+    requirements: string[];
 }
 
 export interface ActivityRecord {

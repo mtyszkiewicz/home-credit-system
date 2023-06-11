@@ -112,7 +112,7 @@ def read_activities(db: Session = Depends(get_db)):
 
 @app.get("/activity_records", response_model=List[schemas.ActivityRecordsHistory])
 def read_activities_records(
-    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 100000, db: Session = Depends(get_db)
 ):
     records = crud.get_activity_records(db, skip=skip, limit=limit)
     if len(records) == 0:

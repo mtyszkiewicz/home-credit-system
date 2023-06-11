@@ -1,2 +1,8 @@
 ### Create an Activity record for User
 POST http://localhost:5055/users/A9A518D471361/activity_records?activity_id=4 
+
+### Get activity records
+GET http://localhost:5055/activity_records
+
+### Get activities
+GET http://localhost:5055/activities

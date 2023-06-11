@@ -19,6 +19,7 @@ class Activity(BaseModel):
     name: str = Field(..., description="Name of the activity")
     value: int = Field(..., description="Score value associated with the activity")
     icon: str = Field(..., description="Icon emoji representing the activity")
+    requirements: List[str] = Field(..., description="Notes and requirements needed to complete the activity")
 
     class Config:
         orm_mode = True
