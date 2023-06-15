@@ -13,12 +13,13 @@ services:
       - TZ=Europe/Warsaw
     ports:
       - "5432:5432"
-  # backend:
-  #     image: python:3.9-bullseye
-  #     volumes:
-  #       - ./backend/:/backend
-  #     working_dir: /backend
-  #     command: >
-  #       bash -c "curl -sSL https://install.python-poetry.org | python3 -
-  #       && /root/.local/bin/poetry install
-  #       && /root/.local/bin/poetry run python3 -m hsc_api
+  backend:
+      image: python:3.9
+      container_name: hcs-backend
+      volumes:
+        - ./backend/:/backend
+      working_dir: /backend
+      command: >
+        bash -c "curl -sSL https://install.python-poetry.org | python3 -
+        && /root/.local/bin/poetry install
+        && /root/.local/bin/poetry run python3 -m hcs_api

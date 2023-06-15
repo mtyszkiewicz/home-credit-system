@@ -8,4 +8,4 @@ if __name__ == "__main__":
     parser.add_argument("--port", default=5055)
     parser.add_argument("--reload", action="store_true")
     args = parser.parse_args()
-    uvicorn.run("hsc_api.main:app", host=args.host, port=int(args.port), log_level="info", reload=args.reload)
+    uvicorn.run("hcs_api.main:app", host=args.host, port=int(args.port), log_level="info", reload=args.reload)

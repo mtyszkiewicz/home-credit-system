@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "hsc-api"
+name = "hcs-api"
 version = "0.1.0"
 description = ""
 authors = ["Marcin Tyszkiewicz <tyszkm@gmail.com>"]
 readme = "README.md"
-packages = [{include = "hsc_api"}]
+packages = [{include = "hcs_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
