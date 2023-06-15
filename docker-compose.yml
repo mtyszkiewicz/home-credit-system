@@ -3,7 +3,7 @@ version: '3.9'
 services:
   database:
     image: postgres:15.3-alpine
-    container_name: hcs-db
+    container_name: hcs-database
     volumes:
       - ./database/data:/var/lib/postgresql/data
       - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
@@ -13,18 +13,6 @@ services:
       - TZ=Europe/Warsaw
     ports:
       - "5432:5432"
-  mosquitto:
-    image: eclipse-mosquitto:2.0.15
-    container_name: hcs-mqtt
-    volumes:
-     - ./messages/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
-     - ./messages/mosquitto/config/passwordfile:/mosquitto/config/passwordfile
-     - ./messages/mosquitto/config/aclfile:/mosquitto/config/aclfile
-     - ./messages/mosquitto/data:/mosquitto/data
-     - ./messages/mosquitto/log/mosquitto.log:/mosquitto/log/mosquitto.log
-    ports:
-     - "1883:1883"
-     - "9001:9001"
   # backend:
   #     image: python:3.9-bullseye
   #     volumes:
