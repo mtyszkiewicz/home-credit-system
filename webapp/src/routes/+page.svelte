@@ -1,27 +1,23 @@
 <script lang="ts">
   import UserProfile from "../lib/UserProfile.svelte";
-  import ActivityDialog from "../lib/ActivityDialog.svelte";
-  import { onMount } from "svelte";
   import type { Activity } from "../types";
   import { page } from "$app/stores";
   const API_BASE = `http://${$page.url.hostname}:5055`;
   export let data;
+
+  let activitiesDone: Activity[] = [];
+  $: total = activitiesDone.reduce((acc, cur) => acc + cur.value, 0);
   $: score = data.user.score;
-  $: selectedActivity = data.activities[0];
 
-  let dialog: HTMLDialogElement;
-  onMount(() => {
-    dialog = document.getElementById("activity-dialog")!;
-  });
-
-  async function handleActivitySubmit(
-    event: CustomEvent<{ activity: Activity }>
-  ) {
-    await fetch(
-      `${API_BASE}/users/${data.user.id}/activity_records?activity_id=${event.detail.activity.id}`,
-      { method: "POST" }
-    );
-    score += event.detail.activity.value;
+  async function handleClaimReward() {
+    for (const activity of activitiesDone) {
+      await fetch(
+        `${API_BASE}/users/${data.user.id}/activity_records?activity_id=${activity.id}`,
+        { method: "POST" }
+      );
+    }
+    score += total;
+    activitiesDone = [];
   }
 </script>
 
@@ -30,20 +26,39 @@
 >
   <div class="flex place-content-around pb-4">
     <UserProfile user={data.user} {score} />
+    {#if activitiesDone.length > 0}
+      <button
+        class="w-20 py-2 rounded-lg bg-opacity-25 ring-2 ring-blue-500 shadow-lg bg-blue-500 place-self-center"
+        on:click={handleClaimReward}
+      >
+        Claim {total > 0 ? "+" : ""}{total}
+      </button>
+    {/if}
   </div>
 
-  <div class="grid grid-cols-3">
-    <ActivityDialog activity={selectedActivity} on:submit={handleActivitySubmit} />
+  <div class="grid grid-cols-9 items-center gap-y-2">
     {#each data.activities as activity (activity.id)}
-      <button
-        class="py-4 m-2 dark:bg-zinc-800 dark:hover:bg-zinc-700 bg-zinc-100 rounded-lg shadow-md"
-        on:click={() => {selectedActivity = activity; dialog.showModal()}}
-      >
-      <span class="text-center text-3xl">{activity.icon}</span>
-        <div class="text-xs mx-1">
-          {activity.name}
-        </div>
-      </button>
+      <div class={`${activity.value > 0 ? 'text-green-500' : 'text-red-500'}`}>
+        {activity.value > 0 ? '+' : ''}{activity.value}
+      </div>
+      <div class="text-xl">{activity.icon}</div>
+      <div class="font-sm text-lg col-span-6 place-self-start">
+        {activity.name}
+      </div>
+      <div class="flex justify-center items-center">
+        <input
+          type="checkbox"
+          bind:group={activitiesDone}
+          value={activity}
+          class="p-3.5 accent-blue-500 shadow"
+        />
+      </div>
     {/each}
   </div>
+
+  <!-- <div class="grid grid-cols-4">
+    {#each data.activities as activity (activity.id)}
+      
+    {/each}
+  </div> -->
 </div>
