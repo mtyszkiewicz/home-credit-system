@@ -13,9 +13,7 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://192.168.1.17",
     "http://192.168.1.17:5173",
-    "http://10.0.0.1",
     "http://10.0.0.1:5173"
 ]
 
