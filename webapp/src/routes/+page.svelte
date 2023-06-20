@@ -3,6 +3,7 @@
   import type { Activity } from "../types";
   import { page } from "$app/stores";
   const API_BASE = `http://${$page.url.hostname}:5055`;
+  /** @type {import('./$types').PageData} */
   export let data;
 
   let activitiesDone: Activity[] = [];

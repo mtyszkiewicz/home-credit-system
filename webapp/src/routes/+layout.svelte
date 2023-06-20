@@ -7,19 +7,19 @@
 {#if data?.user?.id}
   <nav class="flex justify-center py-2 space-x-2">
     <a
-      href="/?user_id={data?.user.id}"
+      href="/?access_token={data?.accessToken}"
       class="lg:hover:bg-slate-100 lg:hover:text-slate-900 lg:hover:border-1 lg:hover:bg-opacity-50"
       class:active={$page.url.pathname === '/'}
       >Profile</a
     >
     <a
-      href="/summary?user_id={data?.user.id}"
+      href="/summary?access_token={data?.accessToken}"
       class="lg:hover:bg-slate-100 lg:hover:text-slate-900 lg:hover:border-1 lg:hover:bg-opacity-50"
       class:active={$page.url.pathname === '/summary'}
       >Summary</a
     >
     <a
-      href="/history?user_id={data?.user.id}"
+      href="/history?access_token={data?.accessToken}"
       class="lg:hover:bg-slate-100 lg:hover:text-slate-900 lg:hover:border-1 lg:hover:bg-opacity-50"
       class:active={$page.url.pathname === '/history'}
       >History</a
