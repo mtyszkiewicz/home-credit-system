@@ -36,6 +36,13 @@ def get_db():
         db.close()
 
 
+@app.get("/auth", response_model=schemas.User)
+def authorize(access_token: str, db: Session = Depends(get_db)):
+    user = crud.get_user_by_access_token(db, access_token=access_token)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Unauthorized")
+    return user.to_dict()
+
 @app.get("/users", response_model=List[schemas.User])
 def read_users(db: Session = Depends(get_db)):
     users = crud.get_users(db)

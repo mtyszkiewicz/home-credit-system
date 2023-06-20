@@ -3,16 +3,17 @@ import type { User } from "../types";
 
 export async function load({ url }) {
   const API_BASE: string = `http://${url.hostname}:5055`;
-  const userId = url.searchParams.get("user_id");
+  const accessToken = url.searchParams.get("access_token");
 
-  if (userId === null) {
+  if (accessToken === null) {
     return {};
   }
 
-  const userRes = await fetch(`${API_BASE}/users/${userId}`);
-  const user: User = await userRes.json();
+  const authResponse = await fetch(`${API_BASE}/auth?access_token=${accessToken}`);
+  const user: User = await authResponse.json();
 
   return {
     user: user,
+    accessToken: accessToken
   };
 }

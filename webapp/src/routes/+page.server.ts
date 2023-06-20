@@ -13,6 +13,6 @@ export async function load({ url }) {
 
   return {
     activities: activities,
-    user: user,
+    // user: user,
   };
 }
