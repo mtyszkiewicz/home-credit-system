@@ -11,7 +11,6 @@ class Activity(Base):
     name = Column(String, unique=True)
     icon = Column(String, unique=True)
     value = Column(Integer)
-    requirements = Column(ARRAY(String))
 
 
 class User(Base):
