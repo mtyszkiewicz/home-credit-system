@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -12,6 +13,18 @@ def get_users(db: Session) -> List[models.User]:
 
 def get_user_by_id(db: Session, user_id: str) -> models.User:
     return db.query(models.User).filter(models.User.id == user_id).first()
+
+def is_valid_uuid(val: str) -> bool:
+    try:
+        uuid.UUID(str(val))
+        return True
+    except ValueError:
+        return False
+
+def get_user_by_access_token(db: Session, access_token: str) -> models.User:
+    if not is_valid_uuid(access_token):
+        return None
+    return db.query(models.User).filter(models.User.access_token == access_token).first()
 
 
 def create_user_activity_record(

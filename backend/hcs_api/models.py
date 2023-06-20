@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY
+from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY, UUID
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -17,6 +17,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
+    access_token = Column(UUID)
     name = Column(String)
     image = Column(String)
     color = Column(String)
