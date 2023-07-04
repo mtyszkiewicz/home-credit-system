@@ -1,27 +1,29 @@
 DROP TABLE IF EXISTS activities;
 CREATE TABLE activities (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     icon VARCHAR(10) NOT NULL,
-    value INTEGER NOT NULL DEFAULT 0
+    value INTEGER NOT NULL DEFAULT 0,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL
 );
 
-INSERT INTO activities (id, name, icon, value) VALUES
-(1, 'Wstawienie zmywarki', '🧆', 2),
-(2, 'Rozładowanie zmywarki', '🍽️', 2),
-(3, 'Umycie blatu w kuchni', '🧽', 3),
-(4, 'Wyrzucenie śmieci', '🗑️', 2),
-(5, 'Wstawienie pralki', '🧺', 2),
-(6, 'Powieszenie prania', '☀️', 2),
-(7, 'Ubrania do szafy', '👔', 3),
-(8, 'Umycie zlewu', '🚰', 3),
-(9, 'Odkurzenie domu', '🌪️', 5),
-(10, 'Umycie umywalki', '🪥', 3),
-(11, 'Usunięcie owłosienia', '💩', 3),
-(12, 'Umycie kabiny prysznicowej', '🚿', 5),
-(14, 'Zakupy', '🥐', 3),
-(15, 'Ścieranie kurzy', '🤧', 4),
-(16, 'Umycie muszli', '🐚', 3);
+INSERT INTO activities (id, start_date, end_date, icon, value, name) VALUES
+(1,  '2023-01-01', '9999-12-31', '🧆', 2, 'Wstawienie zmywarki'),
+(2,  '2023-01-01', '9999-12-31', '🍽️', 2, 'Rozładowanie zmywarki'),
+(3,  '2023-01-01', '9999-12-31', '🧽', 3, 'Umycie blatu w kuchni'),
+(4,  '2023-01-01', '9999-12-31', '🗑️', 2, 'Wyrzucenie śmieci'),
+(5,  '2023-01-01', '9999-12-31', '🧺', 2, 'Wstawienie pralki'),
+(6,  '2023-01-01', '9999-12-31', '☀️', 2,  'Powieszenie prania'),
+(7,  '2023-01-01', '9999-12-31', '👔', 3, 'Ubrania do szafy'),
+(8,  '2023-01-01', '9999-12-31', '🚰', 3, 'Umycie zlewu'),
+(9,  '2023-01-01', '9999-12-31', '🌪️', 5, 'Odkurzenie domu'),
+(10, '2023-01-01', '9999-12-31', '🪥', 3, 'Umycie umywalki'),
+(11, '2023-01-01', '9999-12-31', '💩', 3, 'Usunięcie owłosienia'),
+(12, '2023-01-01', '9999-12-31', '🚿', 5, 'Umycie kabiny prysznicowej'),
+(14, '2023-01-01', '9999-12-31', '🥐', 3, 'Zakupy'),
+(15, '2023-01-01', '9999-12-31', '🤧', 4, 'Ścieranie kurzy'),
+(16, '2023-01-01', '9999-12-31', '🐚', 3, 'Umycie muszli');
 
 
 CREATE TABLE IF NOT EXISTS activity_records (

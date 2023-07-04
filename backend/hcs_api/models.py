@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY, UUID
+from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY, UUID, DATE
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -11,6 +11,8 @@ class Activity(Base):
     name = Column(String, unique=True)
     icon = Column(String, unique=True)
     value = Column(Integer)
+    start_date = Column(DATE)
+    end_date = Column(DATE)
 
 
 class User(Base):
@@ -46,7 +48,11 @@ class ActivityRecord(Base):
 
     user = relationship("User", backref="activity_records", foreign_keys=[user_id])
     activity = relationship(
-        "Activity", backref="activity_records", foreign_keys=[activity_id]
+        "Activity", 
+        primaryjoin="and_(ActivityRecord.activity_id==Activity.id, "
+                        "ActivityRecord.timestamp>=Activity.start_date, "
+                        "ActivityRecord.timestamp<=Activity.end_date)",
+        backref="activity_records"
     )
 
     @property
