@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hcs-dbt"
+version = "0.1.0"
+description = ""
+authors = ["Marcin Tyszkiewicz <56219944+mtyszkiewicz@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "hcs_dbt"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+dbt-core = "^1.5.2"
+dbt-postgres = "^1.5.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
