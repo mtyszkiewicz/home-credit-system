@@ -70,14 +70,3 @@ def get_activity_records_daily(
 ) -> List[models.ActivityRecordsDaily]:
     """Retrieves full history of activites for all users."""
     return db.query(models.ActivityRecordsDaily).offset(skip).limit(limit).all()
-
-
-# def delete_activity_record(db: Session, id: int) -> models.ActivityRecords:
-#     activity_log = (
-#         db.query(models.ActivityRecords).filter(models.ActivityRecords.id == id).first()
-#     )
-#     if activity_log is None:
-#         raise HTTPException(status_code=404, detail="Activity log not found")
-#     db.delete(activity_log)
-#     db.commit()
-#     return activity_log
