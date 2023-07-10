@@ -8,7 +8,7 @@
 
   let activitiesDone: Activity[] = [];
   $: total = activitiesDone.reduce((acc, cur) => acc + cur.value, 0);
-  $: score = data.user.score;
+  $: score = data.user.total_score;
 
   async function handleClaimReward() {
     for (const activity of activitiesDone) {

@@ -1,6 +1,6 @@
 WITH max_dates AS (
     SELECT 
-        icon AS activity_code, 
+        icon, 
         MAX(start_date) AS latest_start_date
     FROM {{ source('raw', 'activities') }}
     GROUP BY icon
@@ -9,9 +9,9 @@ WITH max_dates AS (
 SELECT 
     a.id,
     a.name,
-    m.activity_code,
+    m.icon,
     a.value,
-    m.latest_start_date,
+    a.start_date,
     a.end_date
 FROM {{ source('raw', 'activities') }} a
-JOIN max_dates m ON a.icon = m.activity_code AND a.start_date = m.latest_start_date
+JOIN max_dates m ON a.icon = m.icon AND a.start_date = m.latest_start_date

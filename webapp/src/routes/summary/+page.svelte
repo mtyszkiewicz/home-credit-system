@@ -10,7 +10,7 @@
     <div class="flex place-content-around">
       <UserProfile
         user={summary.user}
-        score={summary.user.score}
+        score={summary.user.total_score}
       />
     </div>
     <table class="w-full mt-3">

@@ -13,7 +13,7 @@ class Activities(Base):
     value = Column(Integer)
 
 class ActivitiesLatest(Base):
-    __tablename__ = "dwh.latest_activities"
+    __tablename__ = "latest_activities"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
@@ -31,7 +31,7 @@ class User(Base):
     color = Column(String)
     
 class UserProfile(Base):
-    __tablename__ = "dwh.users_profile"
+    __tablename__ = "users_profile"
 
     id = Column(Integer, primary_key=True, index=True)
     access_token = Column(UUID)
@@ -55,55 +55,27 @@ class ActivityRecords(Base):
     __tablename__ = "activity_records_new"
 
     id = Column(Integer, primary_key=True, index=True)
-    activity_id = Column(Integer, ForeignKey("activities.id"))
+    activity_icon = Column(String)
     user_id = Column(Integer, ForeignKey("users_new.id"))
     timestamp = Column(DateTime, server_default=text("(CURRENT_TIMESTAMP)"))
 
     user = relationship("User", backref="activity_records_new", foreign_keys=[user_id])
-    activity = relationship(
-        "Activities", backref="activity_records_new", foreign_keys=[activity_id]
-    )
 
-    @property
-    def date(self):
-        return self.timestamp.date()
-    
-    @property
-    def time(self):
-        return str(self.timestamp.time())[:5]
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "timestamp": self.timestamp,
-            "time": self.time,
-            "user": self.user,
-            "activity": self.activity,
-        }
 
 class ActivityRecordsSummary(Base):
-    __tablename__ = "dwh.activity_records_summary"
+    __tablename__ = "activity_records_summary"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users_new.id"))
+    user_id = Column(Integer, ForeignKey("users_profile.id"))
     activity_id = Column(Integer, ForeignKey("activities.id"))
     activity_total_value = Column(Integer)
     activity_total_count = Column(Integer)
     user_total_score = Column(Integer)
 
-    user = relationship("User", foreign_keys=[user_id])
+    user = relationship("UserProfile", foreign_keys=[user_id])
     activity = relationship(
         "Activities", foreign_keys=[activity_id]
     )
-
-    def to_dict(self):
-        return {
-            "user": self.user,
-            "activity": self.activity,
-            "activity_total_value": self.activity_total_value,
-            "activity_total_count": self.activity_total_count,
-            "user_total_score": self.user_total_score
-        }
 
 class ActivityRecordsDaily(Base):
     __tablename__ = "dwh.activity_records_daily"

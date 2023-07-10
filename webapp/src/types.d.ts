@@ -2,8 +2,8 @@ export interface User {
     id: string;
     name: string;
     image: string;
-    score: number;
     color: string;
+    total_score: number;
 }
 
 export interface Activity {

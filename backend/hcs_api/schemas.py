@@ -4,10 +4,11 @@ import datetime
 
 
 class User(BaseModel):
-    id: str = Field(..., description="Unique ID of the user")
+    id: int = Field(..., description="Unique ID of the user")
     name: str = Field(..., description="Name of the user")
     image: str = Field(..., description="Static image filename representing the user's profile")
     color: str = Field(...)
+    total_score: int = Field(...)
 
     class Config:
         orm_mode = True

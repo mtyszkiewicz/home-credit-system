@@ -14,6 +14,7 @@ def get_users(db: Session) -> List[models.User]:
 def get_user_by_id(db: Session, user_id: str) -> models.User:
     return db.query(models.UserProfile).filter(models.UserProfile.id == user_id).first()
 
+
 def is_valid_uuid(val: str) -> bool:
     try:
         uuid.UUID(str(val))
@@ -21,10 +22,15 @@ def is_valid_uuid(val: str) -> bool:
     except ValueError:
         return False
 
+
 def get_user_by_access_token(db: Session, access_token: str) -> models.User:
     if not is_valid_uuid(access_token):
         return None
-    return db.query(models.UserProfile).filter(models.UserProfile.access_token == access_token).first()
+    return (
+        db.query(models.UserProfile)
+        .filter(models.UserProfile.access_token == access_token)
+        .first()
+    )
 
 
 def create_user_activity_record(
@@ -39,31 +45,14 @@ def create_user_activity_record(
 
 def get_activity_summary_for_user(db: Session, user_id: int):
     return (
-        db.query(
-            models.Activities,
-            func.count(models.ActivityRecords.id).label("count"),
-            func.sum(models.Activities.value).label("total_value"),
-        )
-        .join(models.ActivityRecords)
-        .filter(models.ActivityRecords.user_id == user_id)
-        .group_by(models.Activities.id)
+        db.query(models.ActivityRecordsSummary)
+        .filter(models.ActivityRecordsSummary.user_id == user_id)
         .all()
     )
 
 
 def get_activity_summary(db: Session):
-    return (
-        db.query(
-            models.User,
-            models.Activities,
-            func.count(models.ActivityRecords.id).label("count"),
-            func.sum(models.Activities.value).label("total_value"),
-        )
-        .join(models.ActivityRecords, models.User.id == models.ActivityRecords.user_id)
-        .join(models.Activities, models.ActivityRecords.activity_id == models.Activities.id)
-        .group_by(models.User, models.Activities)
-        .all()
-    )
+    return db.query(models.ActivityRecordsSummary).all()
 
 
 def get_activities(db: Session) -> List[models.Activities]:

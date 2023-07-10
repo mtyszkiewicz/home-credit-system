@@ -1,6 +1,5 @@
 with activity_statistics as (
     select 
-        row_number() over () as id,
         users.id as user_id,
         {# users.name as user_name,
         users.color as user_color,
@@ -21,6 +20,7 @@ with activity_statistics as (
 )
 
 select
+    row_number() over () as id,
     user_id,
     activity_id,
     activity_total_value,

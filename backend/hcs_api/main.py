@@ -16,7 +16,7 @@ origins = [
     "http://192.168.1.17",
     "http://192.168.1.17:5173",
     "http://10.0.0.1",
-    "http://10.0.0.1:5173"
+    "http://10.0.0.1:5173",
 ]
 
 app.add_middleware(
@@ -43,6 +43,7 @@ def authorize(access_token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Unauthorized")
     return user.to_dict()
 
+
 @app.get("/users", response_model=List[schemas.User])
 def read_users(db: Session = Depends(get_db)):
     users = crud.get_users(db)
@@ -51,8 +52,17 @@ def read_users(db: Session = Depends(get_db)):
     return users
 
 
+@app.get("/activities", response_model=List[schemas.Activities])
+def read_activities(db: Session = Depends(get_db)):
+    activities = crud.get_activities(db)
+    print(activities)
+    if len(activities) == 0:
+        raise HTTPException(status_code=404, detail="No activities found")
+    return sorted(activities, key=lambda activity: activity.name)
+
+
 @app.get("/users/{user_id}", response_model=schemas.User)
-def read_user(user_id: str, db: Session = Depends(get_db)):
+def read_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user_by_id(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -66,7 +76,9 @@ def read_user_activity_records(user_id: str, db: Session = Depends(get_db)):
     user = crud.get_user_by_id(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return sorted(user.activity_records, key=lambda record: record.timestamp, reverse=True)
+    return sorted(
+        user.activity_records, key=lambda record: record.timestamp, reverse=True
+    )
 
 
 @app.post("/users/{user_id}/activity_records", response_model=schemas.ActivityRecords)
@@ -87,33 +99,27 @@ def create_activity_record_for_user(
     return activity_record
 
 
-@app.get("/users/{user_id}/activity_summary", response_model=schemas.UserActivitySummary)
-def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
-    user = crud.get_user_by_id(db, user_id=user_id)
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    user_activity_summary = crud.get_activity_summary_for_user(db, user_id)
-    return {
-        "user": user.to_dict(),
-        "activity_summary": sorted([
-            {
-                "id": activity.id,
-                "name": activity.name,
-                "count": count,
-                "total_value": total_value,
-                "icon": activity.icon,
-            }
-            for activity, count, total_value in user_activity_summary
-        ], lambda activity: activity["total_value"], reverse=True),
-    }
-
-
-@app.get("/activities", response_model=List[schemas.Activities])
-def read_activities(db: Session = Depends(get_db)):
-    activities = crud.get_activities(db)
-    if len(activities) == 0:
-        raise HTTPException(status_code=404, detail="No activities found")
-    return sorted(activities, key=lambda activity: activity.name)
+# @app.get(
+#     "/users/{user_id}/activity_summary", response_model=schemas.UserActivitySummary
+# )
+# def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
+#     user = crud.get_user_by_id(db, user_id=user_id)
+#     if user is None:
+#         raise HTTPException(status_code=404, detail="User not found")
+#     user_activity_summary = crud.get_activity_summary_for_user(db, user_id)
+#     return {
+#         "user": user.to_dict(),
+#         "activity_summary": [
+#             {
+#                 "id": activity.id,
+#                 "name": activity.name,
+#                 "count": activity_total_count,
+#                 "total_value": activity_total_value,
+#                 "icon": activity.icon,
+#             }
+#             for activity, activity_total_value, activity_total_count in user_activity_summary
+#         ],
+#     }
 
 
 @app.get("/activity_records", response_model=List[schemas.ActivityRecordsHistory])
@@ -127,35 +133,37 @@ def read_activities_records(
     for record in records:
         records_daily[record.timestamp.date()].append(record.to_dict())
 
-    return sorted([
-        {
-            "date": date_str,
-            "records": sorted(data, key=lambda record: record["timestamp"], reverse=True)
-        }
-        for date_str, data in records_daily.items()
-    ], key=lambda day: day["date"], reverse=True)
+    return sorted(
+        [
+            {
+                "date": date_str,
+                "records": sorted(
+                    data, key=lambda record: record["timestamp"], reverse=True
+                ),
+            }
+            for date_str, data in records_daily.items()
+        ],
+        key=lambda day: day["date"],
+        reverse=True,
+    )
 
 
-@app.get("/activity_summary", response_model=List[schemas.UserActivitySummary])
+@app.get("/activity_summary")#, response_model=List[schemas.UserActivitySummary])
 def read_activities_summary(db: Session = Depends(get_db)):
     activity_summary = crud.get_activity_summary(db)
+    result = {}
 
-    summary_dict = {}
-    for user, activity, count, total_value in activity_summary:
-        if user.id not in summary_dict:
-            summary_dict[user.id] = {"user": user.to_dict(), "activity_summary": []}
+    for item in activity_summary:
+        if item.user.id not in result:
+            result[item.user.id] = {"user": item.user.to_dict(), "activity_summary": []}
 
-        summary_dict[user.id]["activity_summary"].append(
+        result[item.user.id]["activity_summary"].append(
             {
-                "id": activity.id,
-                "name": activity.name,
-                "count": count,
-                "total_value": total_value,
-                "icon": activity.icon,
+                "id": item.activity.id,
+                "name": item.activity.name,
+                "count": item.activity_total_count,
+                "total_value": item.activity_total_value,
+                "icon": item.activity.icon,
             }
         )
-
-    for user_id, data in summary_dict.items():
-        summary_dict[user_id]["activity_summary"] = sorted(data["activity_summary"], key=lambda activity: activity["total_value"], reverse=True)
-    
-    return sorted(list(summary_dict.values()), key=lambda data: data["user"]["score"], reverse=True)
+    return result
