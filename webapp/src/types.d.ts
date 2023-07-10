@@ -3,7 +3,7 @@ export interface User {
     name: string;
     image: string;
     color: string;
-    total_score: number;
+    score: number;
 }
 
 export interface Activity {

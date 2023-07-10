@@ -4,7 +4,7 @@ select
     users.image as image,
     users.color as color,
     users.access_token,
-    sum(activities.value) as total_score
+    sum(activities.value) as score
 from {{ source('raw', 'activity_records_new') }} records
 inner join {{ source('raw', 'users_new') }} users
     on records.user_id = users.id

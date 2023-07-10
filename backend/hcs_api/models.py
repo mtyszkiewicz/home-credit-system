@@ -38,7 +38,7 @@ class UserProfile(Base):
     name = Column(String)
     image = Column(String)
     color = Column(String)
-    total_score = Column(Integer)
+    score = Column(Integer)
 
     def to_dict(self):
         return {
@@ -46,7 +46,7 @@ class UserProfile(Base):
             "name": self.name,
             "image": self.image,
             "color": self.color,
-            "total_score": self.total_score
+            "score": self.score
         }
 
 

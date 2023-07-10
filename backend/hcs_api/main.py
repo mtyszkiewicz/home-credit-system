@@ -148,7 +148,7 @@ def read_activities_records(
     )
 
 
-@app.get("/activity_summary")#, response_model=List[schemas.UserActivitySummary])
+@app.get("/activity_summary", response_model=List[schemas.UserActivitySummary])
 def read_activities_summary(db: Session = Depends(get_db)):
     activity_summary = crud.get_activity_summary(db)
     result = {}
@@ -166,4 +166,4 @@ def read_activities_summary(db: Session = Depends(get_db)):
                 "icon": item.activity.icon,
             }
         )
-    return result
+    return list(result.values())

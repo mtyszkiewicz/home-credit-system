@@ -8,7 +8,7 @@ class User(BaseModel):
     name: str = Field(..., description="Name of the user")
     image: str = Field(..., description="Static image filename representing the user's profile")
     color: str = Field(...)
-    total_score: int = Field(...)
+    score: int = Field(...)
 
     class Config:
         orm_mode = True
