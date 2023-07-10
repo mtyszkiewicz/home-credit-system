@@ -1,13 +1,14 @@
 with activity_statistics as (
     select 
+        row_number() over () as id,
         users.id as user_id,
         {# users.name as user_name,
         users.color as user_color,
         activities.name as activity_name,
         activities.icon as activity_icon, #}
         activities.id as activity_id,
-        sum(activities.value) as activity_value,
-        count(activities.value) as activity_count
+        sum(activities.value) as activity_total_value,
+        count(activities.value) as activity_total_count
     from {{ source('raw', 'activity_records_new') }} records
     inner join {{ source('raw', 'users_new') }} users
         on records.user_id = users.id
@@ -22,10 +23,10 @@ with activity_statistics as (
 select
     user_id,
     activity_id,
-    activity_value,
-    activity_count,
-    sum(activity_value) over (partition by user_id) as user_total_score
+    activity_total_value,
+    activity_total_count,
+    sum(activity_total_value) over (partition by user_id) as user_total_score
 from
     activity_statistics
 order by
-    user_total_score desc, activity_value desc
+    user_total_score desc, activity_total_value desc

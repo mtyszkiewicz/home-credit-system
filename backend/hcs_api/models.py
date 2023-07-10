@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY, UUID
+from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP, text, DateTime, ARRAY, UUID, DATE
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -12,41 +12,56 @@ class Activities(Base):
     icon = Column(String, unique=True)
     value = Column(Integer)
 
+class ActivitiesLatest(Base):
+    __tablename__ = "dwh.latest_activities"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True)
+    icon = Column(String, unique=True)
+    value = Column(Integer)
+
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "users_new"
 
     id = Column(Integer, primary_key=True, index=True)
     access_token = Column(UUID)
     name = Column(String)
     image = Column(String)
     color = Column(String)
+    
+class UserProfile(Base):
+    __tablename__ = "dwh.users_profile"
 
-    @property
-    def score(self):
-        return sum([record.activity.value for record in self.activity_records])
+    id = Column(Integer, primary_key=True, index=True)
+    access_token = Column(UUID)
+    name = Column(String)
+    image = Column(String)
+    color = Column(String)
+    total_score = Column(Integer)
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
             "image": self.image,
-            "score": self.score,
-            "color": self.color
+            "color": self.color,
+            "total_score": self.total_score
         }
 
 
+
 class ActivityRecords(Base):
-    __tablename__ = "activity_records"
+    __tablename__ = "activity_records_new"
 
     id = Column(Integer, primary_key=True, index=True)
     activity_id = Column(Integer, ForeignKey("activities.id"))
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users_new.id"))
     timestamp = Column(DateTime, server_default=text("(CURRENT_TIMESTAMP)"))
 
-    user = relationship("User", backref="activity_records", foreign_keys=[user_id])
+    user = relationship("User", backref="activity_records_new", foreign_keys=[user_id])
     activity = relationship(
-        "Activities", backref="activity_records", foreign_keys=[activity_id]
+        "Activities", backref="activity_records_new", foreign_keys=[activity_id]
     )
 
     @property
@@ -61,6 +76,52 @@ class ActivityRecords(Base):
         return {
             "id": self.id,
             "timestamp": self.timestamp,
+            "time": self.time,
+            "user": self.user,
+            "activity": self.activity,
+        }
+
+class ActivityRecordsSummary(Base):
+    __tablename__ = "dwh.activity_records_summary"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users_new.id"))
+    activity_id = Column(Integer, ForeignKey("activities.id"))
+    activity_total_value = Column(Integer)
+    activity_total_count = Column(Integer)
+    user_total_score = Column(Integer)
+
+    user = relationship("User", foreign_keys=[user_id])
+    activity = relationship(
+        "Activities", foreign_keys=[activity_id]
+    )
+
+    def to_dict(self):
+        return {
+            "user": self.user,
+            "activity": self.activity,
+            "activity_total_value": self.activity_total_value,
+            "activity_total_count": self.activity_total_count,
+            "user_total_score": self.user_total_score
+        }
+
+class ActivityRecordsDaily(Base):
+    __tablename__ = "dwh.activity_records_daily"
+
+    id = Column(Integer, primary_key=True)
+    date = Column(DATE)
+    time = Column(String)
+    user_id = Column(Integer, ForeignKey("users_new.id"))
+    activity_id = Column(Integer, ForeignKey("activities.id"))
+
+    user = relationship("User", foreign_keys=[user_id])
+    activity = relationship(
+        "Activities", foreign_keys=[activity_id]
+    )
+
+    def to_dict(self):
+        return {
+            "date": self.date,
             "time": self.time,
             "user": self.user,
             "activity": self.activity,

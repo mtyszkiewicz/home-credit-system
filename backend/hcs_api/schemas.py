@@ -7,7 +7,6 @@ class User(BaseModel):
     id: str = Field(..., description="Unique ID of the user")
     name: str = Field(..., description="Name of the user")
     image: str = Field(..., description="Static image filename representing the user's profile")
-    score: int = Field(..., description="Aggregate score of the user based on activity values")
     color: str = Field(...)
 
     class Config:

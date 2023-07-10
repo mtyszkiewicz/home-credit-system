@@ -48,7 +48,7 @@ def read_users(db: Session = Depends(get_db)):
     users = crud.get_users(db)
     if len(users) == 0:
         raise HTTPException(status_code=404, detail="No users found")
-    return sorted([user.to_dict() for user in users], key=lambda user: user["score"], reverse=True)
+    return users
 
 
 @app.get("/users/{user_id}", response_model=schemas.User)

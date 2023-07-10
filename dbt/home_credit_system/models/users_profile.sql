@@ -1,7 +1,9 @@
 select 
-    users.id as user_id,
-    {# users.name as user_name,
-    users.color as user_color, #}
+    users.id as id,
+    users.name as name,
+    users.image as image,
+    users.color as color,
+    users.access_token,
     sum(activities.value) as total_score
 from {{ source('raw', 'activity_records_new') }} records
 inner join {{ source('raw', 'users_new') }} users
@@ -11,4 +13,4 @@ inner join {{ source('raw', 'activities') }} activities
     and records.create_timestamp >= activities.start_date
     and records.create_timestamp < activities.end_date
 group by
-    users.id, users.name, users.color
+    users.id, users.name, users.image, users.color, users.access_token

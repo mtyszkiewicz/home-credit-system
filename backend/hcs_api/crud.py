@@ -8,11 +8,11 @@ from . import models
 
 
 def get_users(db: Session) -> List[models.User]:
-    return db.query(models.User).all()
+    return db.query(models.UserProfile).all()
 
 
 def get_user_by_id(db: Session, user_id: str) -> models.User:
-    return db.query(models.User).filter(models.User.id == user_id).first()
+    return db.query(models.UserProfile).filter(models.UserProfile.id == user_id).first()
 
 def is_valid_uuid(val: str) -> bool:
     try:
@@ -24,7 +24,7 @@ def is_valid_uuid(val: str) -> bool:
 def get_user_by_access_token(db: Session, access_token: str) -> models.User:
     if not is_valid_uuid(access_token):
         return None
-    return db.query(models.User).filter(models.User.access_token == access_token).first()
+    return db.query(models.UserProfile).filter(models.UserProfile.access_token == access_token).first()
 
 
 def create_user_activity_record(
@@ -68,7 +68,7 @@ def get_activity_summary(db: Session):
 
 def get_activities(db: Session) -> List[models.Activities]:
     """Retrieves all home activities possible."""
-    return db.query(models.Activities).all()
+    return db.query(models.ActivitiesLatest).all()
 
 
 def get_activity_by_id(db: Session, activity_id: int) -> models.Activities:

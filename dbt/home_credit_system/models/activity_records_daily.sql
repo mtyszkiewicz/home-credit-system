@@ -1,4 +1,5 @@
 select 
+    row_number() over () as id,
     date(records.create_timestamp) as "date",
     to_char(records.create_timestamp, 'HH24:MI') as "time",
     users.id as user_id,
