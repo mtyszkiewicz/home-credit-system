@@ -1,12 +1,12 @@
 from collections import defaultdict
+from typing import List
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
-from typing import List
-
 
 models.Base.metadata.create_all(bind=engine)
 
