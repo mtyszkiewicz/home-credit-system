@@ -60,7 +60,7 @@ def read_user(user_id: str, db: Session = Depends(get_db)):
 
 
 @app.get(
-    "/users/{user_id}/activity_records", response_model=List[schemas.ActivityRecord]
+    "/users/{user_id}/activity_records", response_model=List[schemas.ActivityRecords]
 )
 def read_user_activity_records(user_id: str, db: Session = Depends(get_db)):
     user = crud.get_user_by_id(db, user_id=user_id)
@@ -69,7 +69,7 @@ def read_user_activity_records(user_id: str, db: Session = Depends(get_db)):
     return sorted(user.activity_records, key=lambda record: record.timestamp, reverse=True)
 
 
-@app.post("/users/{user_id}/activity_records", response_model=schemas.ActivityRecord)
+@app.post("/users/{user_id}/activity_records", response_model=schemas.ActivityRecords)
 def create_activity_record_for_user(
     user_id: str, activity_id: int, db: Session = Depends(get_db)
 ):
@@ -108,7 +108,7 @@ def read_user_activity_summary(user_id: str, db: Session = Depends(get_db)):
     }
 
 
-@app.get("/activities", response_model=List[schemas.Activity])
+@app.get("/activities", response_model=List[schemas.Activities])
 def read_activities(db: Session = Depends(get_db)):
     activities = crud.get_activities(db)
     if len(activities) == 0:

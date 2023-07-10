@@ -29,8 +29,8 @@ def get_user_by_access_token(db: Session, access_token: str) -> models.User:
 
 def create_user_activity_record(
     db: Session, user_id: int, activity_id: int
-) -> models.ActivityRecord:
-    activity_record = models.ActivityRecord(activity_id=activity_id, user_id=user_id)
+) -> models.ActivityRecords:
+    activity_record = models.ActivityRecords(activity_id=activity_id, user_id=user_id)
     db.add(activity_record)
     db.commit()
     db.refresh(activity_record)
@@ -40,13 +40,13 @@ def create_user_activity_record(
 def get_activity_summary_for_user(db: Session, user_id: int):
     return (
         db.query(
-            models.Activity,
-            func.count(models.ActivityRecord.id).label("count"),
-            func.sum(models.Activity.value).label("total_value"),
+            models.Activities,
+            func.count(models.ActivityRecords.id).label("count"),
+            func.sum(models.Activities.value).label("total_value"),
         )
-        .join(models.ActivityRecord)
-        .filter(models.ActivityRecord.user_id == user_id)
-        .group_by(models.Activity.id)
+        .join(models.ActivityRecords)
+        .filter(models.ActivityRecords.user_id == user_id)
+        .group_by(models.Activities.id)
         .all()
     )
 
@@ -55,37 +55,37 @@ def get_activity_summary(db: Session):
     return (
         db.query(
             models.User,
-            models.Activity,
-            func.count(models.ActivityRecord.id).label("count"),
-            func.sum(models.Activity.value).label("total_value"),
+            models.Activities,
+            func.count(models.ActivityRecords.id).label("count"),
+            func.sum(models.Activities.value).label("total_value"),
         )
-        .join(models.ActivityRecord, models.User.id == models.ActivityRecord.user_id)
-        .join(models.Activity, models.ActivityRecord.activity_id == models.Activity.id)
-        .group_by(models.User, models.Activity)
+        .join(models.ActivityRecords, models.User.id == models.ActivityRecords.user_id)
+        .join(models.Activities, models.ActivityRecords.activity_id == models.Activities.id)
+        .group_by(models.User, models.Activities)
         .all()
     )
 
 
-def get_activities(db: Session) -> List[models.Activity]:
+def get_activities(db: Session) -> List[models.Activities]:
     """Retrieves all home activities possible."""
-    return db.query(models.Activity).all()
+    return db.query(models.Activities).all()
 
 
-def get_activity_by_id(db: Session, activity_id: int) -> models.Activity:
+def get_activity_by_id(db: Session, activity_id: int) -> models.Activities:
     """Retrieves a specific home activity by it's ID."""
-    return db.query(models.Activity).filter(models.Activity == activity_id)
+    return db.query(models.Activities).filter(models.Activities == activity_id)
 
 
 def get_activity_records(
     db: Session, skip: int = 0, limit: int = 100
-) -> List[models.ActivityRecord]:
+) -> List[models.ActivityRecords]:
     """Retrieves full history of activites for all users."""
-    return db.query(models.ActivityRecord).offset(skip).limit(limit).all()
+    return db.query(models.ActivityRecords).offset(skip).limit(limit).all()
 
 
-# def delete_activity_record(db: Session, id: int) -> models.ActivityRecord:
+# def delete_activity_record(db: Session, id: int) -> models.ActivityRecords:
 #     activity_log = (
-#         db.query(models.ActivityRecord).filter(models.ActivityRecord.id == id).first()
+#         db.query(models.ActivityRecords).filter(models.ActivityRecords.id == id).first()
 #     )
 #     if activity_log is None:
 #         raise HTTPException(status_code=404, detail="Activity log not found")

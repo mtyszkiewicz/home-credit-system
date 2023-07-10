@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 
-class Activity(Base):
+class Activities(Base):
     __tablename__ = "activities"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -36,7 +36,7 @@ class User(Base):
         }
 
 
-class ActivityRecord(Base):
+class ActivityRecords(Base):
     __tablename__ = "activity_records"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -46,7 +46,7 @@ class ActivityRecord(Base):
 
     user = relationship("User", backref="activity_records", foreign_keys=[user_id])
     activity = relationship(
-        "Activity", backref="activity_records", foreign_keys=[activity_id]
+        "Activities", backref="activity_records", foreign_keys=[activity_id]
     )
 
     @property
