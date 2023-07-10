@@ -1,13 +1,8 @@
 select 
-    date(records.create_timestamp) as "date",
-    to_char(records.create_timestamp, 'HH24:MI') as "time",
     users.id as user_id,
-    activities.id as activity_id
     {# users.name as user_name,
-    users.color as user_color,
-    activities.name as activity_name,
-    activities.icon as activity_icon,
-    activities.value as activity_value #}
+    users.color as user_color, #}
+    sum(activities.value) as total_score
 from {{ source('raw', 'activity_records_new') }} records
 inner join {{ source('raw', 'users_new') }} users
     on records.user_id = users.id
@@ -15,5 +10,5 @@ inner join {{ source('raw', 'activities') }} activities
     on records.activity_icon = activities.icon 
     and records.create_timestamp >= activities.start_date
     and records.create_timestamp < activities.end_date
-order by
-    records.create_timestamp
+group by
+    users.id, users.name, users.color
