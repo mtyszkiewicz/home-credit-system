@@ -83,18 +83,19 @@ class ActivityRecordsDaily(Base):
     id = Column(Integer, primary_key=True)
     date = Column(DATE)
     time = Column(String)
-    user_id = Column(Integer, ForeignKey("users_new.id"))
+    user_id = Column(Integer, ForeignKey("users_profile.id"))
     activity_id = Column(Integer, ForeignKey("activities.id"))
 
-    user = relationship("User", foreign_keys=[user_id])
+    user = relationship("UserProfile", foreign_keys=[user_id])
     activity = relationship(
         "Activities", foreign_keys=[activity_id]
     )
 
     def to_dict(self):
         return {
+            "id": self.id,
             "date": self.date,
             "time": self.time,
-            "user": self.user,
+            "user": self.user.to_dict(),
             "activity": self.activity,
         }

@@ -26,7 +26,6 @@ class Activities(BaseModel):
 
 class ActivityRecords(BaseModel):
     id: int = Field(..., description="Unique ID of the activity record")
-    timestamp: datetime.datetime = Field(..., description="Time when the activity record was created")
     user: User = Field(..., description="The user associated with the activity record")
     activity: Activities = Field(..., description="The activity associated with the record")
     time: str
