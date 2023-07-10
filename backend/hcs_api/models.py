@@ -78,7 +78,7 @@ class ActivityRecordsSummary(Base):
     )
 
 class ActivityRecordsDaily(Base):
-    __tablename__ = "dwh.activity_records_daily"
+    __tablename__ = "activity_records_daily"
 
     id = Column(Integer, primary_key=True)
     date = Column(DATE)

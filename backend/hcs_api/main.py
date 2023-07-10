@@ -126,26 +126,17 @@ def create_activity_record_for_user(
 def read_activities_records(
     skip: int = 0, limit: int = 100000, db: Session = Depends(get_db)
 ):
-    records = crud.get_activity_records(db, skip=skip, limit=limit)
+    records = crud.get_activity_records_daily(db, skip=skip, limit=limit)
     if len(records) == 0:
         raise HTTPException(status_code=404, detail="No activity records found")
+
     records_daily = defaultdict(list)
     for record in records:
-        records_daily[record.timestamp.date()].append(record.to_dict())
+        records_daily[record.date].append(record.to_dict())
 
-    return sorted(
-        [
-            {
-                "date": date_str,
-                "records": sorted(
-                    data, key=lambda record: record["timestamp"], reverse=True
-                ),
-            }
-            for date_str, data in records_daily.items()
-        ],
-        key=lambda day: day["date"],
-        reverse=True,
-    )
+    return [
+        {"date": date_str, "records": data} for date_str, data in records_daily.items()
+    ]
 
 
 @app.get("/activity_summary", response_model=List[schemas.UserActivitySummary])

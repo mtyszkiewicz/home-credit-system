@@ -17,4 +17,4 @@ inner join {{ source('raw', 'activities') }} activities
     and records.create_timestamp >= activities.start_date
     and records.create_timestamp < activities.end_date
 order by
-    records.create_timestamp
+    records.create_timestamp desc

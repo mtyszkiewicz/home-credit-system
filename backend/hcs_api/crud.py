@@ -65,11 +65,11 @@ def get_activity_by_id(db: Session, activity_id: int) -> models.Activities:
     return db.query(models.Activities).filter(models.Activities == activity_id)
 
 
-def get_activity_records(
+def get_activity_records_daily(
     db: Session, skip: int = 0, limit: int = 100
-) -> List[models.ActivityRecords]:
+) -> List[models.ActivityRecordsDaily]:
     """Retrieves full history of activites for all users."""
-    return db.query(models.ActivityRecords).offset(skip).limit(limit).all()
+    return db.query(models.ActivityRecordsDaily).offset(skip).limit(limit).all()
 
 
 # def delete_activity_record(db: Session, id: int) -> models.ActivityRecords:
