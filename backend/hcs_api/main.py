@@ -69,18 +69,18 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return user.to_dict()
 
 
-@app.post("/users/{user_id}/activity_records", response_model=schemas.ActivityRecords)
+@app.post("/users/{user_id}/activity_records")#, response_model=schemas.ActivityRecordsCreate)
 def create_activity_record_for_user(
     user_id: str, activity_id: int, db: Session = Depends(get_db)
 ):
     user = crud.get_user_by_id(db, user_id=user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    activity = crud.get_activity_by_id(db, activity_id == activity_id)
+    activity = crud.get_activity_by_id(db, activity_id=activity_id)
     if activity is None:
         raise HTTPException(status_code=404, detail="Activity not found")
     activity_record = crud.create_user_activity_record(
-        db=db, user_id=user_id, activity_id=activity_id
+        db=db, user_id=user_id, activity_icon=activity.icon # not id
     )
     if activity_record is None:
         raise HTTPException(status_code=500, detail="Could not create activity record")

@@ -57,7 +57,7 @@ class ActivityRecords(Base):
     id = Column(Integer, primary_key=True, index=True)
     activity_icon = Column(String)
     user_id = Column(Integer, ForeignKey("users_new.id"))
-    timestamp = Column(DateTime, server_default=text("(CURRENT_TIMESTAMP)"))
+    create_timestamp = Column(DateTime, server_default=text("(CURRENT_TIMESTAMP)"))
 
     user = relationship("User", backref="activity_records_new", foreign_keys=[user_id])
 

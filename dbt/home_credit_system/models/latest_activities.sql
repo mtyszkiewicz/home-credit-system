@@ -9,7 +9,7 @@ WITH max_dates AS (
 SELECT 
     a.id,
     a.name,
-    m.icon,
+    m.icon as icon,
     a.value,
     a.start_date,
     a.end_date

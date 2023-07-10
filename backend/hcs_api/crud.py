@@ -33,9 +33,9 @@ def get_user_by_access_token(db: Session, access_token: str) -> models.User:
 
 
 def create_user_activity_record(
-    db: Session, user_id: int, activity_id: int
+    db: Session, user_id: int, activity_icon: str
 ) -> models.ActivityRecords:
-    activity_record = models.ActivityRecords(activity_id=activity_id, user_id=user_id)
+    activity_record = models.ActivityRecords(activity_icon=activity_icon, user_id=user_id)
     db.add(activity_record)
     db.commit()
     db.refresh(activity_record)
@@ -54,14 +54,14 @@ def get_activity_summary(db: Session):
     return db.query(models.ActivityRecordsSummary).all()
 
 
-def get_activities(db: Session) -> List[models.Activities]:
+def get_activities(db: Session) -> List[models.ActivitiesLatest]:
     """Retrieves all home activities possible."""
     return db.query(models.ActivitiesLatest).all()
 
 
-def get_activity_by_id(db: Session, activity_id: int) -> models.Activities:
+def get_activity_by_id(db: Session, activity_id: int) -> models.ActivitiesLatest:
     """Retrieves a specific home activity by it's ID."""
-    return db.query(models.Activities).filter(models.Activities == activity_id)
+    return db.query(models.ActivitiesLatest).filter(models.ActivitiesLatest.id == activity_id).first()
 
 
 def get_activity_records_daily(
