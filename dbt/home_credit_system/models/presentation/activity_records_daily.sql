@@ -9,8 +9,8 @@ select
     activities.name as activity_name,
     activities.icon as activity_icon,
     activities.value as activity_value #}
-from {{ source('raw', 'activity_records_new') }} records
-inner join {{ source('raw', 'users_new') }} users
+from {{ source('raw', 'activity_records') }} records
+inner join {{ source('raw', 'users') }} users
     on records.user_id = users.id
 inner join {{ source('raw', 'activities') }} activities
     on records.activity_icon = activities.icon 

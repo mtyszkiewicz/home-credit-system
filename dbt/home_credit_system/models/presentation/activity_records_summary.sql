@@ -8,8 +8,8 @@ with activity_statistics as (
         activities.id as activity_id,
         sum(activities.value) as activity_total_value,
         count(activities.value) as activity_total_count
-    from {{ source('raw', 'activity_records_new') }} records
-    inner join {{ source('raw', 'users_new') }} users
+    from {{ source('raw', 'activity_records') }} records
+    inner join {{ source('raw', 'users') }} users
         on records.user_id = users.id
     inner join {{ source('raw', 'activities') }} activities
         on records.activity_icon = activities.icon 
