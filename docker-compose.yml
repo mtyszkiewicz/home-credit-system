@@ -2,30 +2,54 @@ version: "3.9"
 
 services:
   database:
-    image: postgres:15.3-alpine
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     container_name: hcs-database
     volumes:
       - ./database/data:/var/lib/postgresql/data
       - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    env_file:
-      - .env
     environment:
-      - TZ=Europe/Warsaw
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=5o3B1Lh6kJsH5ZEACndao3eG
+      - POSTGRES_HOST=hcs-database
+      - POSTGRES_DB=home
+      - POSTGRES_PORT=5432
     ports:
       - "5432:5432"
-
+  dbt:
+    build:
+      context: ./dbt
+      dockerfile: Dockerfile
+    container_name: hcs-dbt
+    volumes:
+      - ./dbt/sustainability_assistant:/usr/sustainability_assistant
+    depends_on:
+     - database
+    environment:
+      - HCS_USER=admin
+      - HCS_PASS=5o3B1Lh6kJsH5ZEACndao3eG
+      - HCS_HOST=hcs-database
+      - HCS_DBNAME=home
+      - HCS_SCHEMA=dwh
+    entrypoint:
+      - "sleep"
+      - "+inf"
+    ports:
+     - 8080:8080
   backend:
-    image: python:3.9
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: hcs-backend
     volumes:
-      - ./backend/:/backend
-    working_dir: /backend
-    command: >-
-      bash -c "curl -sSL https://install.python-poetry.org | python3 -
-      && /root/.local/bin/poetry install --no-dev
-      && /root/.local/bin/poetry run python3 -m hcs_api --host 0.0.0.0 --port 5055 --reload"
-    env_file:
-      - .env
+      - ./backend/sustainability_assistant:/app/sustainability_assistant
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=5o3B1Lh6kJsH5ZEACndao3eG
+      - POSTGRES_HOST=hcs-database
+      - POSTGRES_DB=home
+      - POSTGRES_PORT=5432
     ports:
       - "5055:5055"
     depends_on:

@@ -55,7 +55,6 @@ def read_users(db: Session = Depends(get_db)):
 @app.get("/activities", response_model=List[schemas.Activities])
 def read_activities(db: Session = Depends(get_db)):
     activities = crud.get_activities(db)
-    print(activities)
     if len(activities) == 0:
         raise HTTPException(status_code=404, detail="No activities found")
     return sorted(activities, key=lambda activity: activity.name)
@@ -69,7 +68,9 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return user.to_dict()
 
 
-@app.post("/users/{user_id}/activity_records")#, response_model=schemas.ActivityRecordsCreate)
+@app.post(
+    "/users/{user_id}/activity_records", response_model=schemas.ActivityRecordsCreate
+)
 def create_activity_record_for_user(
     user_id: str, activity_id: int, db: Session = Depends(get_db)
 ):
@@ -80,7 +81,7 @@ def create_activity_record_for_user(
     if activity is None:
         raise HTTPException(status_code=404, detail="Activity not found")
     activity_record = crud.create_user_activity_record(
-        db=db, user_id=user_id, activity_icon=activity.icon # not id
+        db=db, user_id=user_id, activity_icon=activity.icon  # not id
     )
     if activity_record is None:
         raise HTTPException(status_code=500, detail="Could not create activity record")

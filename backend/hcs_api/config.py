@@ -6,11 +6,7 @@ class Settings(BaseSettings):
     postgres_password: str
     postgres_port: str
     postgres_db: str
-
-    @property
-    def postgres_host(self):
-        """Postgres host in docker network is always 'database'"""
-        return "database"
+    postgres_host: str
 
 
 settings = Settings()
