@@ -1,8 +1,8 @@
 sources:
   - name: raw
-    schema: public
+    schema: raw
     tables:
-      - name: users_new
+      - name: users
         columns:
           - name: id
             description: Primary key of the users table
@@ -30,7 +30,7 @@ sources:
           - name: end_date
             description: Date to which the activity is valid
 
-      - name: activity_records_new
+      - name: activity_records
         columns:
           - name: id
             description: Primary key of the activity_records table
@@ -41,4 +41,22 @@ sources:
           - name: timestamp
             description: Timestamp when the activity was marked done
 
-
+models:
+  - name: activity_records_daily
+  - name: activity_records_summary
+  - name: activities
+  - name: users
+    description: Users table with total score calculated.
+    columns:
+    - name: id
+      description: Primary key of the users table
+    - name: access_token
+      description: Access token for authentication and authorization
+    - name: name
+      description: Profile name of the user
+    - name: image
+      description: File name of the user's profile, stored statically on webpage 
+    - name: color
+      description: Accent color used for differentiating users
+    - name: score
+      description: Total score of the user

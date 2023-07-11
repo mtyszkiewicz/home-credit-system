@@ -1,9 +1,12 @@
-DROP TABLE IF EXISTS activities;
-CREATE TABLE activities (
+CREATE SCHEMA IF NOT EXISTS "raw" AUTHORIZATION CURRENT_USER;
+
+TRUNCATE TABLE IF EXISTS raw.activities;
+CREATE TABLE raw.activities (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     icon VARCHAR(10) NOT NULL,
     value INTEGER NOT NULL DEFAULT 0
+    
 );
 
 INSERT INTO activities (id, name, icon, value) VALUES

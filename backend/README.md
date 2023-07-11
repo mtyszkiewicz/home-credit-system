@@ -4,7 +4,7 @@
 ## Endpoints
 
 ### GET `/auth?access_token=...`
-User authentication and authorization endpoint. Provided valid access_token returns the user.
+User authentication and authorization endpoint. Provided valid *access_token* returns the user.
 - Loads from <span style="color:lightgray">**users**</span>
 
 ### GET `/users`
@@ -12,11 +12,11 @@ Returns all users.
 - Loads from <span style="color:lightgray">**users**</span>
 
 ### GET `/users/{user_id}`
-Provided user_id returns the user.
+Provided *user_id* returns the user.
 - Loads from <span style="color:lightgray">**users**</span>
 
 ### POST `/users/{user_id}/activity_records`
-Provided user_id creates an activity record for the user.
+Provided *user_id* and *activity_id* creates an activity record for the user.
 - Updates <span style="color:lightgreen">**raw_activity_records**</span>
 
 ### GET `/activity_records`
