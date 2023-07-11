@@ -2,8 +2,8 @@ export interface User {
     id: string;
     name: string;
     image: string;
-    score: number;
     color: string;
+    score: number;
 }
 
 export interface Activity {
@@ -13,7 +13,7 @@ export interface Activity {
     icon: string;
 }
 
-export interface ActivityRecord {
+export interface ActivityRecords {
     id: number;
     timestamp: string;
     user: User;
@@ -23,10 +23,10 @@ export interface ActivityRecord {
 
 export interface ActivityRecordsHistory {
     date: string;
-    records: ActivityRecord[];
+    records: ActivityRecords[];
 }
 
-export interface ActivityRecordCreate {
+export interface ActivityRecordsCreate {
     user_id: number;
     activity_id: number;
 }
