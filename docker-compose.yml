@@ -54,15 +54,16 @@ services:
       - "5055:5055"
     depends_on:
       - database
-  # frontend:
-  #   build:
-  #     context: ./webapp
-  #     dockerfile: Dockerfile
-  #   container_name: hcs-frontend
-  #   volumes:
-  #     - ./webapp/src:/app/src
-  #     - ./webapp/static:/app/static
-  #   ports:
-  #     - "0.0.0.0:5173:5173"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    container_name: hcs-frontend
+    volumes:
+      - ./webapp/src:/app/src
+      - ./webapp/static:/app/static
+    ports:
+      - "192.168.1.17:5173:5173"
+      - "10.0.0.1:5173:5173"
+    depends_on:
+      - backend

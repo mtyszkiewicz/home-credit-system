@@ -2,7 +2,7 @@ import type { User } from "../types";
 
 
 export async function load({ url }) {
-  const API_BASE: string = `http://${url.hostname}:5055`;
+  const API_BASE: string = `http://hcs-backend:5055`;
   const accessToken = url.searchParams.get("access_token");
 
   if (accessToken === null) {
