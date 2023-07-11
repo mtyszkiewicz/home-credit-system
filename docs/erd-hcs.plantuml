@@ -1,0 +1,77 @@
+@startuml hcs-erd 
+
+entity "raw_activities" as raw_activities #LightGreen {
+  *id : SERIAL (PK)
+  --
+  *name : VARCHAR(255)
+  *value : INTEGER
+  *icon : VARCHAR(10)
+  *start_date : DATE
+  *end_date : DATE
+}
+
+entity "raw_activity_records" as raw_activity_records #LightGreen {
+  *id : SERIAL (PK)
+  *user_id : INTEGER
+  *activity_icon : VARCHAR(5)
+  *create_timestamp : TIMESTAMP
+}
+
+entity "raw_users" as raw_users #LightGreen {
+  *id : INTEGER (PK)
+  --
+  *access_token : UUID
+  *name : VARCHAR(20)
+  *image : VARCHAR(20)
+  *color : VARCHAR(20)
+}
+
+entity "users" as users {
+  *id : INTEGER (PK)
+  --
+  *access_token : UUID
+  *name : VARCHAR(20)
+  *image : VARCHAR(20)
+  *color : VARCHAR(20)
+  *total_score : INTEGER
+}
+
+entity "activities_latest" as activities_latest {
+  *id : SERIAL (PK)
+  --
+  *name : VARCHAR(255)
+  *value : INTEGER
+  *icon : VARCHAR(10)
+  *start_date : DATE
+  *end_date : DATE
+}
+
+entity "activity_records_summary" as activity_records_summary {
+  *id : SERIAL (PK)
+  --
+  *user_id : INTEGER
+  *activity_id : INTEGER
+  *activity_total_value : INTEGER
+  *activity_total_count : INTEGER
+  *user_score : INTEGER
+}
+
+entity "activity_records_daily" as activity_records_daily {
+  *id : SERIAL (PK)
+  --
+  *date: DATE
+  *time: VARCHAR(5)
+  *user_id : INTEGER
+  *activity_id : INTEGER
+}
+
+raw_activities ||--o{ raw_activity_records
+raw_activity_records }o--|| raw_users
+activity_records_summary }o--|| users
+raw_activities ||--o{ activity_records_summary
+activity_records_daily }o--|| users
+raw_activities ||--o{ activity_records_daily
+raw_activities ||-|| activities_latest
+
+
+@enduml
