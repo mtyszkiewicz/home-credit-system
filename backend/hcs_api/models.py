@@ -24,6 +24,7 @@ class SourceUser(Base):
     image = Column(String)
     color = Column(String)
 
+
 class SourceActivityRecord(Base):
     __tablename__ = "activity_records"
     __table_args__ = {"schema": "raw"}
@@ -36,7 +37,6 @@ class SourceActivityRecord(Base):
     user = relationship(
         "SourceUser", backref="activity_records", foreign_keys=[user_id]
     )
-
 
 
 class Activity(Base):
@@ -68,7 +68,6 @@ class User(Base):
             "color": self.color,
             "score": self.score,
         }
-
 
 
 class ActivityRecordSummary(Base):

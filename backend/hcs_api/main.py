@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import List
+import uuid
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,7 +38,7 @@ def get_db():
 
 
 @app.get("/auth", response_model=schemas.User)
-def authorize(access_token: str, db: Session = Depends(get_db)):
+def authorize(access_token: uuid.UUID, db: Session = Depends(get_db)):
     user = crud.get_user_by_access_token(db, access_token=access_token)
     if user is None:
         raise HTTPException(status_code=404, detail="Unauthorized")
@@ -80,19 +81,17 @@ def create_activity_record_for_user(
     activity = crud.get_activity_by_id(db, activity_id=activity_id)
     if activity is None:
         raise HTTPException(status_code=404, detail="Activity not found")
-    activity_record = crud.create_user_activity_record(
-        db=db, user_id=user_id, activity_icon=activity.icon  # not id
+    new_activity_record = crud.create_new_activity_record(
+        db=db, user_id=user_id, activity_icon=activity.icon
     )
-    if activity_record is None:
+    if new_activity_record is None:
         raise HTTPException(status_code=500, detail="Could not create activity record")
-    return activity_record.__dict__
+    return new_activity_record.__dict__
 
 
 @app.get("/activity_records", response_model=List[schemas.ActivityRecordsHistory])
-def read_activities_records(
-    skip: int = 0, limit: int = 100000, db: Session = Depends(get_db)
-):
-    records = crud.get_activity_records_daily(db, skip=skip)
+def read_activities_records(db: Session = Depends(get_db)):
+    records = crud.get_activity_records_daily(db)
     if len(records) == 0:
         raise HTTPException(status_code=404, detail="No activity records found")
 
