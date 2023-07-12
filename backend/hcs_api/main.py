@@ -85,14 +85,14 @@ def create_activity_record_for_user(
     )
     if activity_record is None:
         raise HTTPException(status_code=500, detail="Could not create activity record")
-    return activity_record
+    return activity_record.__dict__
 
 
 @app.get("/activity_records", response_model=List[schemas.ActivityRecordsHistory])
 def read_activities_records(
     skip: int = 0, limit: int = 100000, db: Session = Depends(get_db)
 ):
-    records = crud.get_activity_records_daily(db, skip=skip, limit=limit)
+    records = crud.get_activity_records_daily(db, skip=skip)
     if len(records) == 0:
         raise HTTPException(status_code=404, detail="No activity records found")
 

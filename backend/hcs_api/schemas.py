@@ -43,7 +43,9 @@ class ActivityRecordsHistory(BaseModel):
 
 class ActivityRecordsCreate(BaseModel):
     user_id: int = Field(..., description="ID of the user for whom the activity record is being created")
-    activity_id: int = Field(..., description="ID of the activity for the activity record")
+    activity_icon: str = Field(..., description="Icon of the activity for the activity record")
+    create_timestamp: datetime.datetime
+
 
 
 class ActivitySummary(BaseModel):
