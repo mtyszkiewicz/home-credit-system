@@ -12,14 +12,14 @@ def get_users(db: Session) -> List[models.User]:
 
 
 def get_user_by_id(db: Session, user_id: str) -> models.User:
-    """Retrieves a user with matching user_id"""
+    """Retrieves a user with matching `user_id`."""
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
 def get_user_by_access_token(db: Session, access_token: uuid.UUID) -> models.User:
     """
     Retrieves a user with matching access_token.
-    This authorization method will be deprecated in future versions.
+    This authorization method will get deprecated in future versions.
     """
     return (
         db.query(models.User).filter(models.User.access_token == access_token).first()
@@ -29,13 +29,13 @@ def get_user_by_access_token(db: Session, access_token: uuid.UUID) -> models.Use
 def get_activities(db: Session) -> List[models.Activity]:
     """
     Retrieves all most recently updated activities.
-    The full history of activityies is stored in the source table.
+    The full history of activities is stored in `raw.activities`.
     """
     return db.query(models.Activity).all()
 
 
 def get_activity_by_id(db: Session, activity_id: int) -> models.Activity:
-    """Retrieves an activity with matching activity_id."""
+    """Retrieves an activity with matching `activity_id`."""
     return db.query(models.Activity).filter(models.Activity.id == activity_id).first()
 
 

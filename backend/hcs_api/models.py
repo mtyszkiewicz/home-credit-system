@@ -5,6 +5,14 @@ from .database import Base
 
 
 class SourceActivity(Base):
+    """
+    Activities source table.
+
+    This table tracks history (SCD2) of all activites and how they were updated in time.
+    Latest activities are available in Activity class, which represents a view with necessary transformations.
+    All inserts to this source table are done only by the ingestion scripts.
+    """
+
     __tablename__ = "activities"
     __table_args__ = {"schema": "raw"}
 
@@ -12,9 +20,16 @@ class SourceActivity(Base):
     name = Column(String, unique=True)
     icon = Column(String, unique=True)
     value = Column(Integer)
+    start_date = Column(DATE)
+    end_date = Column(DATE)
 
 
 class SourceUser(Base):
+    """
+    Users source table.
+    All inserts to this table are done only by the ingestion scripts.
+    """
+
     __tablename__ = "users"
     __table_args__ = {"schema": "raw"}
 
@@ -26,6 +41,11 @@ class SourceUser(Base):
 
 
 class SourceActivityRecord(Base):
+    """
+    Activity Records source table.
+    Here the new done activities get inserted.
+    """
+
     __tablename__ = "activity_records"
     __table_args__ = {"schema": "raw"}
 
