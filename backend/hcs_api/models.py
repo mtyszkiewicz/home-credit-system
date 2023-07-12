@@ -73,6 +73,7 @@ class User(Base):
 
 class ActivityRecordSummary(Base):
     __tablename__ = "activity_records_summary"
+    __table_args__ = {"schema": "dwh"}
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("dwh.users.id"))
@@ -87,6 +88,7 @@ class ActivityRecordSummary(Base):
 
 class ActivityRecordDaily(Base):
     __tablename__ = "activity_records_daily"
+    __table_args__ = {"schema": "dwh"}
 
     id = Column(Integer, primary_key=True)
     date = Column(DATE)
