@@ -43,7 +43,7 @@ services:
       dockerfile: Dockerfile
     container_name: hcs-backend
     volumes:
-      - ./backend/hcs_api:/app/hcs_api
+      - ./backend/hcs_api:/code/hcs_api
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=5o3B1Lh6kJsH5ZEACndao3eG

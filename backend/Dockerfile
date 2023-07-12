@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./hcs_api /code/hcs_api
 
-CMD ["uvicorn", "hcs_api.main:app", "--host", "0.0.0.0", "--port", "5055"]
+CMD ["uvicorn", "hcs_api.main:app", "--reload", "--host", "0.0.0.0", "--port", "5055"]
