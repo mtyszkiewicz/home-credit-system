@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source .env;
 PGPASSWORD=$POSTGRES_PASSWORD pg_dump --dbname $POSTGRES_DB \
