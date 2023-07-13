@@ -4,34 +4,26 @@ services:
   database:
     build:
       context: ./database
-      dockerfile: Dockerfile
-    container_name: hcs-database
+      dockerfile: Dockerfile.dev
+    container_name: hcs-dev-database
     volumes:
       - ./database/data:/var/lib/postgresql/data
       - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=5o3B1Lh6kJsH5ZEACndao3eG
-      - POSTGRES_HOST=hcs-database
-      - POSTGRES_DB=home
-      - POSTGRES_PORT=5432
+    env_file:
+      - .env.dev
     ports:
       - "5432:5432"
   dbt:
     build:
       context: ./dbt
-      dockerfile: Dockerfile
-    container_name: hcs-dbt
+      dockerfile: Dockerfile.dev
+    container_name: hcs-dev-dbt
     volumes:
       - ./dbt/sustainability_assistant:/usr/sustainability_assistant
     depends_on:
      - database
-    environment:
-      - HCS_USER=admin
-      - HCS_PASS=5o3B1Lh6kJsH5ZEACndao3eG
-      - HCS_HOST=hcs-database
-      - HCS_DBNAME=home
-      - HCS_SCHEMA=dwh
+    env_file:
+      - .env.dev
     entrypoint:
       - "sleep"
       - "+inf"
@@ -40,16 +32,12 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
-    container_name: hcs-backend
+      dockerfile: Dockerfile.dev
+    container_name: hcs-dev-backend
     volumes:
       - ./backend/hcs_api:/code/hcs_api
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=5o3B1Lh6kJsH5ZEACndao3eG
-      - POSTGRES_HOST=hcs-database
-      - POSTGRES_DB=home
-      - POSTGRES_PORT=5432
+    env_file:
+      - .env.dev
     ports:
       - "5055:5055"
     depends_on:
@@ -57,11 +45,13 @@ services:
   frontend:
     build:
       context: ./webapp
-      dockerfile: Dockerfile
-    container_name: hcs-frontend
+      dockerfile: Dockerfile.dev
+    container_name: hcs-dev-frontend
     volumes:
       - ./webapp/src:/app/src
       - ./webapp/static:/app/static
+    env_file:
+      - .env.dev
     ports:
       - "192.168.1.17:5173:5173"
       - "10.0.0.1:5173:5173"
