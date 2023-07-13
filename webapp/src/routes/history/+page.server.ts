@@ -1,8 +1,8 @@
+import { env } from '$env/dynamic/private';
 import type { ActivityRecordsHistory } from '../../types';
 
 export async function load({ url }) {
-  const API_BASE: string = `http://hcs-backend:5055`;
-  const historyRes = await fetch(`${API_BASE}/activity_records`);
+  const historyRes = await fetch(`${env.API_BASE_URL}/activity_records`);
   const history: ActivityRecordsHistory[] = await historyRes.json();
 
   return {

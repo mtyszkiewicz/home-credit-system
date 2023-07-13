@@ -1,10 +1,10 @@
 import type { Activity, User } from "../types";
+import { env } from '$env/dynamic/private'
 
 
 
 export async function load({ url }) {
-  const API_BASE: string = `http://hcs-backend:5055`;
-  const activitiesRes = await fetch(`${API_BASE}/activities`);
+  const activitiesRes = await fetch(`${env.API_BASE_URL}/activities`);
   const activities: Activity[] = await activitiesRes.json();
   return {
     activities: activities
