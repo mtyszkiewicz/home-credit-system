@@ -1,5 +1,2 @@
-.env
-rundb.sh
 database/backup
 database/data
-.env.prod
