@@ -13,7 +13,7 @@ INSERT INTO raw.activities (id, start_date, end_date, icon, value, name) VALUES
 (3,  '2023-01-01', '9999-12-31', '🧽', 3, 'Umycie blatu w kuchni'),
 (4,  '2023-01-01', '9999-12-31', '🗑️', 2, 'Wyrzucenie śmieci'),
 (5,  '2023-01-01', '2023-07-11', '🧺', 2, 'Wstawienie pralki'),
-(6,  '2023-01-01', '9999-12-31', '☀️', 2,  'Powieszenie prania'),
+(6,  '2023-01-01', '9999-12-31', '☀️', 2,  'Rozwieszenie prania'),
 (7,  '2023-01-01', '2023-07-11', '👔', 3, 'Ubrania do szafy'),
 (8,  '2023-01-01', '9999-12-31', '🚰', 3, 'Umycie zlewu w kuchni'),
 (9,  '2023-01-01', '9999-12-31', '🌪️', 5, 'Odkurzenie domu'),
@@ -26,4 +26,5 @@ INSERT INTO raw.activities (id, start_date, end_date, icon, value, name) VALUES
 (17, '2023-07-12', '9999-12-31', '🧺', 4, 'Wstawienie pralki'),
 (18, '2023-07-12', '9999-12-31', '👔', 4, 'Ubrania do szafy'),
 (19, '2023-07-12', '9999-12-31', '🥐', 4, 'Zakupy'),
-(20, '2023-01-01', '9999-12-31', '🦠', 5, 'Odetkanie odpływu w umywalce');
+(20, '2023-01-01', '9999-12-31', '🦠', 6, 'Odetkanie odpływu w umywalce'),
+(21, '2023-01-01', '9999-12-31', '🫧', 5, 'Umycie podłogi w salonie');
