@@ -1,9 +1,28 @@
 # Home Credit System
+Web application turning boring household activities into a never ending competition game.
 
-Projekt **HCS** ma na celu rozwiąznie problemu podziału obowiązków domowych między osobami mieszkającymi pod jednym dachem — domownikami.
+## Screenshots
+<table>
+<tr>
+<td>
+<img src="./docs/screenshot-profiles.jpg" alt="Screenshot of profiles page" width="300"/>
+</td>
+<td>
+<img src="./docs/screenshot-summary.jpg" alt="Screenshot of summary page" width="300"/>
+</td>
+<td>
+<img src="./docs/screenshot-history.jpg" alt="Screenshot of history page" width="300"/>
+</td>
+</tr>
+<tr>
+<td align="center">Profiles Page</td>
+<td align="center">Summary Page</td>
+<td align="center">History Page</td>
+</tr>
+</table>
 
-Domownicy za wykonanie każdej aktywności otrzymują ustaloną (wcześniej) liczbę punktów,
-która powinna odpowiadać poziomowi trudności danej aktywności.
+## Who is this for?
+The app was designed specificly for roommates and couples, who are struggling to establish a fair and equal division of effort put into household activities.
 
-Przykładowo: Rozwieszenie prania (*+1*), Rozwieszenie ubrań na wieszakach (*+3*)
-Jeżeli jakaś aktywność jest zaniedbywana, można podnieść jej wartość punktową — aby była bardziej pożądana.
+## Architecture
+![Architecture diagram](./docs/hcs-architecture.png)

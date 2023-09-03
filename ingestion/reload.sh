@@ -7,4 +7,4 @@ connection_string="postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$
 # psql $connection_string -f ./queries/setup.sql
 psql $connection_string -f ./queries/activities.sql
 # psql $connection_string -f ./queries/activity_records.sql
-# psql $connection_string -f ./queries/users.sql
+psql $connection_string -f ./queries/users.sql
